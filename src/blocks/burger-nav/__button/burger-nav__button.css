@@ -1,0 +1,13 @@
+.burger-nav__button {
+  border-radius: 100px;
+  border: 1px solid #fff;
+  background-color: transparent;
+  color: white;
+  width: 288px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  margin: 22px 16px 24px;
+  padding: 8px 15px;
+  cursor: pointer;
+}

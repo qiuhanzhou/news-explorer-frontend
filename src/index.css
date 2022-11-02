@@ -1,13 +1,24 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@import url(./vendor/normalize.css);
+@import url(./vendor/fonts/inter.css);
+@import url(./vendor/fonts/roboto.css);
+@import url(./blocks/App/App.css);
+@import url(./blocks/navigation/navigation.css);
+@import url(./blocks/navigation/__bar/navigation__bar.css);
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+@import url(./blocks/navigation/_bright-theme/navigation_bright-theme.css);
+@import url(./blocks/navigation/_burger-open/navigation_burger-open.css);
+@import url(./blocks/navigation/__link/navigation__link.css);
+@import url(./blocks/navigation/__link/_type_focus/navigation__link_type_focus.css);
+@import url(./blocks/navigation/__items-wrapper/navigation__items-wrapper.css);
+@import url(./blocks/navigation/__button/navigation__button.css);
+@import url(./blocks/navigation/__button/_type_signin/navigation__button_type_signin.css);
+@import url(./blocks/navigation/__button/_type_signout/navigation__button_type_signout.css);
+@import url(./blocks/navigation/__signout-icon/navigation__signout-icon.css);
+@import url(./blocks/navigation/__logo-link/navigation__logo-link.css);
+
+@import url(./blocks/burger-nav/burger-nav.css);
+@import url(./blocks/burger-nav/__button/burger-nav__button.css);
+@import url(./blocks/burger-nav/__link/burger-nav__link.css);
+@import url(./blocks/burger-nav/__burger-btn/burger-nav__burger-btn.css);
+
+@import url(./blocks/header/header.css);
