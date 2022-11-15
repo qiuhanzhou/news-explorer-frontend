@@ -1,0 +1,11 @@
+.form__server-error {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  text-align: center;
+  color: #ff0000;
+  padding: 17px 0 8px;
+  margin: 0;
+}

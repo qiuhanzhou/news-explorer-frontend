@@ -1,0 +1,21 @@
+.form__label {
+  font-family: 'Inter';
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #2f71e5;
+  margin-top: 31px;
+  width: 358px;
+}
+@media screen and (max-width: 700px) {
+  .form__label {
+    width: 288px;
+    margin-top: 31px;
+  }
+}
+@media screen and (max-width: 320px) {
+  .form__label {
+    max-width: 100%;
+    margin-top: 31px;
+  }
+}

@@ -1,5 +1,4 @@
 .navigation_burger-open {
-  max-width: 1440px;
   position: fixed;
   width: 100%;
   backdrop-filter: blur(2px);

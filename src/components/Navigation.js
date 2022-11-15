@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import logOutIconWhite from '../images/Union-white.svg'
 import logOutIconBlack from '../images/Union-black.svg'
@@ -8,13 +8,15 @@ import burgerBlack from '../images/burger-black.svg'
 import burgerWhite from '../images/burger-white.svg'
 import closeIcon from '../images/close-white.svg'
 
-export default function Navigation({ loggedIn, userName }) {
-  const location = useLocation()
-  const [currentPath] = useState(location.pathname)
+export default function Navigation({
+  loggedIn,
+  userName,
+  brightTheme,
+  currentPath,
+  onSignIn,
+}) {
   const [width, setWidth] = useState(window.innerWidth)
   const [burgerOpen, setBurgerOpen] = useState(false)
-  const [brightTheme, setBrightTheme] = useState(false)
-
   const breakPoint = 700
 
   useEffect(() => {
@@ -23,27 +25,16 @@ export default function Navigation({ loggedIn, userName }) {
     return () => window.removeEventListener('resize', handleWindowResize)
   }, [])
 
-  useEffect(() => {
-    if (currentPath === '/saved-news') {
-      setBrightTheme(true)
-    } else {
-      setBrightTheme(false)
-    }
-  }, [currentPath])
-
   function onSignOut() {
     console.log('onsignout')
   }
 
-  function onSignIn() {
-    console.log('onsignin')
-  }
   function toggleBurger() {
     setBurgerOpen(!burgerOpen)
   }
 
   return (
-    <div
+    <section
       className={`navigation ${brightTheme ? 'navigation_bright-theme' : ''}  
       ${width < breakPoint && burgerOpen ? 'navigation_burger-open' : ''}`}
     >
@@ -117,12 +108,15 @@ export default function Navigation({ loggedIn, userName }) {
           <button className='burger-nav__burger-btn' onClick={toggleBurger}>
             <img
               src={brightTheme ? burgerBlack : burgerWhite}
-              alt='burger menu for mobile screen'
+              alt='burger menu icon for mobile screen'
             />
           </button>
         ) : (
           <button className='burger-nav__burger-btn' onClick={toggleBurger}>
-            <img src={closeIcon} alt='close icon for burger menu' />
+            <img
+              src={closeIcon}
+              alt='close button icon of burger menu for mobile screen'
+            />
           </button>
         )}
       </div>
@@ -162,6 +156,6 @@ export default function Navigation({ loggedIn, userName }) {
           )}
         </div>
       )}
-    </div>
+    </section>
   )
 }
