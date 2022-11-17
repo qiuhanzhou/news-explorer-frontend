@@ -1,0 +1,9 @@
+.App {
+  font-family: 'Roboto';
+  line-height: 24px;
+  color: #1a1b22;
+  max-width: 1440px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: white;
+}
