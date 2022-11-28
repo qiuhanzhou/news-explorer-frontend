@@ -18,20 +18,39 @@ import ProtectedRoute from '../ProtectedRoute'
 import ModalWithForm from '../ModalWithForm/ModalWithForm'
 import InfoTooltip from '../InfoToolTip/InfoToolTip'
 import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader'
+import About from '../About/About'
+import Footer from '../Footer/Footer'
+import api from '../../utils/newsApi'
 
 export default function App() {
   const location = useLocation()
 
   const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [brightTheme, setBrightTheme] = useState(null)
-  const [isAuthFormOpen, setIsAuthFormOpen] = useState(true)
+  const [isAuthFormOpen, setIsAuthFormOpen] = useState(false)
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
-  const [message, setMessage] = useState('Registration successfully completed!')
+  const [message, setMessage] = useState('')
+  const [cards, setCards] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+
+  function serachNews(searchTerm) {
+    setIsLoading(true)
+    api
+      .getNews(searchTerm)
+      .then((data) => {
+        console.log(data)
+        setCards(data.articles)
+      })
+      .catch((err) => {
+        console.log(`can't get news: ${err}`)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }
 
   useEffect(() => {
-    console.log(location.pathname)
-
     if (location.pathname === '/saved-news') {
       setBrightTheme(true)
     } else {
@@ -40,7 +59,6 @@ export default function App() {
   }, [location.pathname])
 
   function handleCloseAllPopups(e) {
-    console.log('close popup')
     if (
       (e.type === 'click' &&
         (e.target.classList.contains('modal__close-button') ||
@@ -128,9 +146,16 @@ export default function App() {
                 brightTheme={brightTheme}
                 loggedIn={isLoggedIn}
                 onSignIn={onSignIn}
+                setIsLoggedIn={setIsLoggedIn}
               />
               <Header brightTheme={brightTheme} />
-              <Main cards={[{ a: 1 }, { b: 2 }]} />
+              <Main
+                cards={cards}
+                isSignedIn={isLoggedIn}
+                setIsAuthModalOpen={setIsAuthFormOpen}
+              />
+              <About />
+
               <ModalWithForm
                 isOpen={isAuthFormOpen}
                 onClose={handleCloseAllPopups}
@@ -138,6 +163,9 @@ export default function App() {
                 handleOnRegisterSubmit={handleRegisterSubmit}
                 handleOnSigninSubmit={handleSigninSubmit}
                 isSuccess={isSuccess}
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
+                setIsAuthFormOpen={setIsAuthFormOpen}
               />
               <InfoTooltip
                 isOpen={isInfoTooltipOpen}
@@ -147,6 +175,7 @@ export default function App() {
                 setIsSignInOpen={setIsAuthFormOpen}
                 isSuccess={isSuccess}
               />
+              <Footer />
             </>
           }
         />
@@ -160,9 +189,12 @@ export default function App() {
                   currentPath={location.pathname}
                   brightTheme={brightTheme}
                   loggedIn={isLoggedIn}
+                  onSignIn={onSignIn}
+                  setIsLoggedIn={setIsLoggedIn}
                 />
                 <SavedNewsHeader />
                 <SavedNews />
+                <Footer />
               </>
             }
           />

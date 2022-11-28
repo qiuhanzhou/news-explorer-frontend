@@ -1,0 +1,181 @@
+.card {
+  position: relative;
+  list-style: none;
+}
+.card__img {
+  border-top-left-radius: 4%;
+  border-top-right-radius: 4%;
+  height: 272px;
+  margin: 0;
+  object-fit: cover;
+  padding: 0;
+  width: 100%;
+}
+
+.card__tooltip-container {
+  background-color: white;
+  box-shadow: 0px 10px 22px rgba(59, 74, 116, 0.1);
+  border-radius: 10px;
+  position: absolute;
+  width: 182px;
+  height: 40px;
+  top: 24px;
+  right: 69px;
+  margin: 0;
+  visibility: hidden;
+}
+.card__tooltip-container_shown {
+  visibility: visible;
+}
+.card__tooltip {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+  margin: 11px 20px;
+}
+.card__content {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20px 24px 24px;
+  background: white;
+  border-bottom-left-radius: 4%;
+  border-bottom-right-radius: 4%;
+  max-height: 304px;
+}
+
+.card__date {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 24px;
+  color: #b6bcbf;
+  margin: 0;
+}
+
+.card__title {
+  font-family: 'Roboto Slab';
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 30px;
+  margin: 12px 0 16px;
+  height: 60px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.card__text {
+  font-family: 'Roboto';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  margin: 0;
+  height: 110px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+}
+.card__link {
+  text-decoration: none;
+  color: #1a1b22;
+  height: 0;
+}
+.card__save-button {
+  background: url(../../images/save-button.svg) no-repeat;
+  width: 40px;
+  height: 40px;
+  border: none;
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+.card__save-button_saved {
+  background: url(../../images/save-button-savemark.svg) no-repeat;
+}
+.card__save-button:hover {
+  background: url(../../images/save-button-hover.svg) no-repeat;
+}
+.card__source-name {
+  font-family: 'Roboto Slab';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #b6bcbf;
+  margin: 18px 0 0;
+}
+
+@media screen and (max-width: 1200px) {
+  .card__tooltip-container {
+    width: 100px;
+  }
+  .card__tooltip {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}
+
+@media screen and (max-width: 930px) {
+  .card__img {
+    height: 150px;
+  }
+  .card__save-button {
+    top: 8px;
+    right: 8px;
+  }
+  .card__tooltip-container {
+    top: 8px;
+    right: 49px;
+  }
+
+  .card__title {
+    font-size: 22px;
+    line-height: 24px;
+    height: 72px;
+  }
+  .card__content {
+    max-height: 270px;
+    padding: 16px;
+  }
+  .card__text {
+    height: 88px;
+    font-size: 16px;
+    line-height: 22px;
+    -webkit-line-clamp: 4;
+  }
+  .card__source-name {
+    margin: 12px 0 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .card__img {
+    height: 196px;
+  }
+  .card__content {
+    max-height: 244px;
+    padding: 16px;
+  }
+  .card__title {
+    font-size: 22px;
+    line-height: 24px;
+    height: 48px;
+  }
+  .card__text {
+    height: 66px;
+    font-size: 16px;
+    line-height: 22px;
+    -webkit-line-clamp: 3;
+  }
+  .card__source-name {
+    margin: 29px 0 0;
+  }
+}

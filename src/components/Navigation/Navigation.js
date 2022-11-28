@@ -15,6 +15,7 @@ export default function Navigation({
   brightTheme,
   currentPath,
   onSignIn,
+  setIsLoggedIn,
 }) {
   const [width, setWidth] = useState(window.innerWidth)
   const [burgerOpen, setBurgerOpen] = useState(false)
@@ -34,7 +35,6 @@ export default function Navigation({
   }, [])
 
   function listenScrollEvent(e) {
-    console.log(window.pageYOffset)
     if (window.pageYOffset > 0) {
       setIsScrolled(true)
     } else {
@@ -44,6 +44,7 @@ export default function Navigation({
 
   function onSignOut() {
     console.log('onsignout')
+    setIsLoggedIn(false)
   }
 
   function toggleBurger() {
@@ -88,7 +89,7 @@ export default function Navigation({
               <>
                 <Link
                   to='/saved-news'
-                  className={`navigation__link ${
+                  className={`navigation__link navigation__link_type_saved${
                     currentPath === '/saved-news'
                       ? 'navigation__link_type_focus'
                       : ''
@@ -158,6 +159,7 @@ export default function Navigation({
           <Link to='/saved-news' className='navigation_burger-nav_link'>
             Saved articles
           </Link>
+
           {!loggedIn && (
             <button
               aria-label='signin'

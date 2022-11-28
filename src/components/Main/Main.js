@@ -1,15 +1,24 @@
+import './Main.css'
 import Preloader from '../Preloader'
-import About from '../About/About'
-import NewsCardList from '../NewsCardList'
+import NewsCardList from '../NewsCardList/NewsCardList'
+import { useState } from 'react'
 
-export default function Main({ cards }) {
+export default function Main({ cards, isSignedIn, setIsAuthModalOpen }) {
+  const [searchSuccess, setSearchSuccess] = useState(true)
+
   return (
     <main className='main'>
-      <section className='results'>
-        <NewsCardList cards={cards} />
-      </section>
+      {searchSuccess && (
+        <div className='main__results'>
+          <h1 className='main__results_title'>Search Results</h1>
+          <NewsCardList
+            cards={cards}
+            isSignedIn={isSignedIn}
+            setIsAuthModalOpen={setIsAuthModalOpen}
+          />
+        </div>
+      )}
       <Preloader />
-      <About />
     </main>
   )
 }

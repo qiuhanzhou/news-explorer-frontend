@@ -1,7 +1,4 @@
 import './InfoToolTip.css'
-import { useState } from 'react'
-import { useRef, useEffect } from 'react'
-import useForm from '../../utils/useForm'
 import Modal from '../Modal/Modal'
 
 export default function InfoToolTip({

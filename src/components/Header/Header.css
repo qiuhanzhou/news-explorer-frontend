@@ -3,6 +3,7 @@
   background-size: cover;
   min-height: 576px;
   color: #fff;
+  width: 100%;
 }
 @media screen and (max-width: 930px) {
   .header {

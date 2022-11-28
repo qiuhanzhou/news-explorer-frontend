@@ -1,6 +1,6 @@
 import './SearchForm.css'
 
-export default function SearchForm() {
+export default function SearchForm({ handleOnSearch }) {
   return (
     <form className='search-form'>
       <input
@@ -10,7 +10,9 @@ export default function SearchForm() {
         name='search'
         placeholder='Enter topic'
       />
-      <button className='search-form__button'>Search</button>
+      <button className='search-form__button' onClick={handleOnSearch}>
+        Search
+      </button>
     </form>
   )
 }

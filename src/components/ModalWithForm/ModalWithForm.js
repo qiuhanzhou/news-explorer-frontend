@@ -11,6 +11,9 @@ export default function ModalWithForm({
   handleOnSigninSubmit,
   isSuccess,
   message,
+  isLoggedIn,
+  setIsLoggedIn,
+  setIsAuthFormOpen,
 }) {
   //set states with input values on input change
   const { values, handleChange } = useForm({
@@ -47,13 +50,16 @@ export default function ModalWithForm({
   function onSubmit(e) {
     e.preventDefault()
 
-    if (email && password) {
-      if (isSignin) {
-        handleOnRegisterSubmit(password, email, username)
-      } else {
-        handleOnSigninSubmit(email)
-      }
-    }
+    // if (email && password) {
+    //   if (isSignin) {
+    //     handleOnRegisterSubmit(password, email, username)
+    //   } else {
+    //     handleOnSigninSubmit(email)
+    //   }
+    // }
+
+    setIsLoggedIn(!isLoggedIn)
+    setIsAuthFormOpen(false)
   }
 
   return (

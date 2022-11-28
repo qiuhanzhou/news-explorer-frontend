@@ -1,4 +1,4 @@
-import author from '../../images/IMG_4557.jpg'
+import author from '../../images/author.jpg'
 import './About.css'
 export default function About({}) {
   return (

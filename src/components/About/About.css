@@ -3,6 +3,9 @@
   grid-template-columns: 464px 1fr;
   column-gap: 56px;
   margin: 80px 104px;
+  max-width: 1440px;
+  box-sizing: border-box;
+  align-items: center;
 }
 .about__author {
   width: 100%;
@@ -44,6 +47,21 @@
     margin: 0 0 16px;
   }
 }
+@media screen and (max-width: 700px) {
+  .about {
+    grid-template-columns: 1fr;
+    margin: 0;
+  }
+  .about__author {
+    width: 272px;
+    height: 272px;
+    margin: 32px 0 24px;
+  }
+  .about__text-container {
+    min-width: 288px;
+    margin: 0 16px 110px;
+  }
+}
 
 @media screen and (max-width: 700px) {
   .about {
@@ -57,6 +75,6 @@
   }
   .about__text-container {
     min-width: 288px;
-    margin: 0 16px;
+    margin: 0 16px 110px;
   }
 }

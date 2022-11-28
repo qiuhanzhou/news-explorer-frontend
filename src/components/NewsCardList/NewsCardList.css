@@ -1,0 +1,57 @@
+.card-list {
+  box-sizing: border-box;
+  max-width: 1440px;
+  grid-gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(224px, 400px));
+  justify-content: center;
+  margin: 46px auto 68px;
+  padding: 0;
+}
+
+.card-list__button {
+  background-color: #fff;
+  border: none;
+  border-radius: 80px;
+  display: block;
+  height: 64px;
+  margin: 64px auto 0;
+  padding: 0;
+  visibility: visible;
+  width: 288px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  color: #1a1b22;
+}
+.card-list__button:hover {
+  background: #e8e8e8;
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 930px) {
+  .card-list {
+    grid-gap: 8px;
+    margin: 32px auto 32px;
+  }
+}
+@media screen and (max-width: 750px) {
+  .card-list {
+    grid-gap: 8px;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .card-list {
+    grid-template-columns: repeat(2, min(224px));
+    margin: 58px auto 21px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .card-list {
+    grid-template-columns: repeat(1, min(288px));
+    grid-gap: 10px;
+  }
+}
