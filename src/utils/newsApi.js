@@ -1,6 +1,5 @@
 import './constants'
 import { apiKey, BASE_URL } from './constants'
-const searchTerm = 'apple'
 
 const currentDate = new Date()
   .toLocaleString()
@@ -29,7 +28,7 @@ class Api {
       })
   }
 
-  getNews() {
+  getNews(searchTerm) {
     return this._request(
       `${BASE_URL}?q=${searchTerm}&from=${fromDate}&to=${currentDate}&apiKey=${apiKey}`,
     )

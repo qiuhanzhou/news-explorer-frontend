@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './NewsCard.css'
 
 const months = [
@@ -16,16 +16,50 @@ const months = [
   'December',
 ]
 
-export default function NewsCard({ card, isSignedIn, setIsAuthModalOpen }) {
+export default function NewsCard({
+  card,
+  isSignedIn,
+  setIsAuthModalOpen,
+  isCardTypeSavedNews,
+  savedCards,
+  setSavedCards,
+  keyword,
+}) {
   const [isTooptipShown, setIsTooptipShown] = useState(false)
   const [isCardSaved, setIsCardSaved] = useState(false)
 
-  function handleSaveClick() {
+  //update isCardSaved status upon mounting
+  useEffect(() => {
+    if (savedCards.some((item) => item.url === card.url)) {
+      setIsCardSaved(true)
+    } else {
+      setIsCardSaved(false)
+    }
+  }, [savedCards])
+
+  function handleSaveClick(e) {
     if (!isSignedIn) {
       setIsAuthModalOpen(true)
     } else {
-      setIsCardSaved(true)
+      if (!isCardSaved) {
+        setIsCardSaved(true)
+        setSavedCards([...savedCards, card])
+      } else {
+        setIsCardSaved(false)
+        savedCards = savedCards.filter((item) => {
+          console.log(item.url)
+          return item.url !== card.url
+        })
+        setSavedCards([...savedCards])
+      }
     }
+  }
+  function handleDeleteClick() {
+    savedCards = savedCards.filter((item) => {
+      console.log(item.url)
+      return item.url !== card.url
+    })
+    setSavedCards([...savedCards])
   }
 
   function convertDate(timestr) {
@@ -37,16 +71,31 @@ export default function NewsCard({ card, isSignedIn, setIsAuthModalOpen }) {
 
   return (
     <li className='card'>
-      <button
-        type='button'
-        aria-label='save'
-        className={`card__save-button ${
-          isCardSaved ? 'card__save-button_saved' : ''
-        }`}
-        onClick={handleSaveClick}
-        onMouseEnter={() => setIsTooptipShown(true)}
-        onMouseLeave={() => setIsTooptipShown(false)}
-      ></button>
+      {!isCardTypeSavedNews && (
+        <button
+          type='button'
+          aria-label='save'
+          className={`card__save-button ${
+            isCardSaved ? 'card__save-button_saved' : ''
+          }`}
+          onClick={handleSaveClick}
+          onMouseEnter={() => setIsTooptipShown(true)}
+          onMouseLeave={() => setIsTooptipShown(false)}
+        ></button>
+      )}
+
+      {isCardTypeSavedNews && (
+        <>
+          <div class='card__keyword'>{keyword}</div>
+          <button
+            type='button'
+            aria-label='delete'
+            className='card__delete-button'
+            onClick={handleDeleteClick}
+          ></button>
+        </>
+      )}
+
       <div
         className={`card__tooltip-container ${
           isTooptipShown && !isSignedIn ? 'card__tooltip-container_shown' : ''

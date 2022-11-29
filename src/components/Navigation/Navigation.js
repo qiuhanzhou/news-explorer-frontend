@@ -8,15 +8,18 @@ import logoBlack from '../../images/NewsExplorer-blackk.svg'
 import burgerBlack from '../../images/burger-black.svg'
 import burgerWhite from '../../images/burger-white.svg'
 import closeIcon from '../../images/close-white.svg'
+import { useContext } from 'react'
+import { CurrentUserContext } from '../../context/CurrentUserContext'
 
 export default function Navigation({
   loggedIn,
-  userName,
   brightTheme,
   currentPath,
   onSignIn,
   setIsLoggedIn,
 }) {
+  const { name } = useContext(CurrentUserContext)
+
   const [width, setWidth] = useState(window.innerWidth)
   const [burgerOpen, setBurgerOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
@@ -103,7 +106,7 @@ export default function Navigation({
                   className='navigation__button navigation__button_type_signout'
                   onClick={onSignOut}
                 >
-                  {userName}ersdfsdf
+                  {name}
                   <img
                     src={
                       currentPath === '/saved-news'
@@ -177,7 +180,7 @@ export default function Navigation({
               className='navigation_burger-nav_button'
               onClick={onSignOut}
             >
-              {userName}ersdfsdf
+              {name}
               <img
                 src={logOutIconWhite}
                 alt='signout icon'

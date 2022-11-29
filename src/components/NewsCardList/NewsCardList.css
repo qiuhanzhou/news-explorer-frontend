@@ -1,11 +1,10 @@
 .card-list {
-  box-sizing: border-box;
-  max-width: 1440px;
+  max-width: 1232px;
   grid-gap: 16px;
   display: grid;
   grid-template-columns: repeat(3, minmax(224px, 400px));
   justify-content: center;
-  margin: 46px auto 68px;
+  margin: auto;
   padding: 0;
 }
 
@@ -33,7 +32,11 @@
 @media screen and (max-width: 930px) {
   .card-list {
     grid-gap: 8px;
-    margin: 32px auto 32px;
+  }
+  .card-list__button {
+    margin: 32px auto 0;
+    width: 240px;
+    height: 56px;
   }
 }
 @media screen and (max-width: 750px) {
@@ -45,7 +48,6 @@
 @media screen and (max-width: 720px) {
   .card-list {
     grid-template-columns: repeat(2, min(224px));
-    margin: 58px auto 21px;
   }
 }
 
@@ -53,5 +55,10 @@
   .card-list {
     grid-template-columns: repeat(1, min(288px));
     grid-gap: 10px;
+  }
+  .card-list__button {
+    margin: 21px auto 0;
+    width: 288px;
+    height: 56px;
   }
 }

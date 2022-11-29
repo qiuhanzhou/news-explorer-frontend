@@ -7,31 +7,34 @@ export default function NewsCardList({
   cards,
   isSignedIn,
   setIsAuthModalOpen,
+  savedCards,
+  setSavedCards,
 }) {
   const [count, setCount] = useState(3)
-  const [renderedCards, setRendedCards] = useState(cards.slice(0, count))
+  const [toBeRenderedCards, setToBeRendedCards] = useState(
+    cards.slice(0, count),
+  )
 
   useEffect(() => {
-    setRendedCards(cards.slice(0, count))
+    setToBeRendedCards(cards.slice(0, count))
   }, [cards, count])
-
-  useEffect(() => {
-    console.log(renderedCards, cards.slice(0, 3))
-  }, [renderedCards, cards])
 
   function handleClickShowMore() {
     setCount((count) => count + 3)
-
-    // setRendedCards(cards.slice(0, count))
   }
   return (
     <>
       <ul className='card-list'>
-        {renderedCards.map((card) => (
+        {toBeRenderedCards.map((card, index) => (
           <NewsCard
+            key={index}
+            index={index}
             card={card}
             isSignedIn={isSignedIn}
             setIsAuthModalOpen={setIsAuthModalOpen}
+            savedCards={savedCards}
+            setSavedCards={setSavedCards}
+            isCardTypeSavedNews={false}
           />
         ))}
       </ul>

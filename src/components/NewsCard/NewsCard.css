@@ -1,7 +1,14 @@
 .card {
   position: relative;
   list-style: none;
+  transition: all 0.2s linear;
 }
+
+.card:hover {
+  box-shadow: 0 4px 16px rgb(17 17 26 / 10%), 0 8px 32px rgb(17 17 26 / 5%);
+  transform: translateY(-5px);
+}
+
 .card__img {
   border-top-left-radius: 4%;
   border-top-right-radius: 4%;
@@ -88,9 +95,57 @@
   height: 40px;
   border: none;
   position: absolute;
-  top: 24px;
   right: 24px;
+  top: 24px;
+  cursor: pointer;
 }
+.card__delete-button {
+  background: url(../../images/delete-button.svg) no-repeat;
+  border: none;
+  cursor: pointer;
+  background-color: #fff;
+  background-position: 50%;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  max-width: 40px;
+  min-height: 40px;
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  transition: all 0.3s linear;
+  width: 100%;
+}
+.card__delete-button:hover {
+  background: url(../../images/delete-button-hover.svg) no-repeat;
+}
+
+.card__keyword {
+  align-items: center;
+  background-color: #fff;
+  border: none;
+  border-radius: 10px;
+  box-sizing: border-box;
+  color: #000;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  left: 15px;
+  line-height: 1.71;
+  margin: 0;
+  max-width: 130px;
+  min-height: 40px;
+  overflow: hidden;
+  padding: 7.5px 20px 0;
+  position: absolute;
+  text-align: center;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+  top: 18px;
+  white-space: nowrap;
+}
+
 .card__save-button_saved {
   background: url(../../images/save-button-savemark.svg) no-repeat;
 }
@@ -125,6 +180,10 @@
     height: 150px;
   }
   .card__save-button {
+    top: 8px;
+    right: 8px;
+  }
+  .card__delete-button {
     top: 8px;
     right: 8px;
   }

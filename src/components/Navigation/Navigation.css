@@ -64,6 +64,9 @@
   border-color: white;
 }
 
+.navigation_bright-theme {
+  border-color: #d1d2d6;
+}
 .navigation_bright-theme .navigation__button {
   color: black;
   border-color: #1a1b22;

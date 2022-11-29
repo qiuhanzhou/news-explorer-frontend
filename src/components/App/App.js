@@ -10,7 +10,7 @@ import {
   useLocation,
 } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import SavedNews from '../SavedNews'
+import SavedNews from '../SavedNews/SavedNews'
 import Header from '../Header/Header'
 import Main from '../Main/Main'
 import Navigation from '../Navigation/Navigation'
@@ -21,6 +21,7 @@ import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader'
 import About from '../About/About'
 import Footer from '../Footer/Footer'
 import api from '../../utils/newsApi'
+import { CurrentUserContext } from '../../context/CurrentUserContext'
 
 export default function App() {
   const location = useLocation()
@@ -32,10 +33,70 @@ export default function App() {
   const [isSuccess, setIsSuccess] = useState(false)
   const [message, setMessage] = useState('')
   const [cards, setCards] = useState([])
+  const [savedCards, setSavedCards] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [currentUser, setCurrentUser] = useState({})
 
-  function serachNews(searchTerm) {
-    setIsLoading(true)
+  useEffect(() => {
+    setSavedCards(JSON.parse(localStorage.getItem('saved-cards')))
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('saved-cards', JSON.stringify(savedCards))
+  }, [savedCards])
+
+  // function serachNews(searchTerm) {
+  //   setIsLoading(true)
+  //   api
+  //     .getNews('apple')
+  //     .then((data) => {
+  //       console.log(data)
+  //       setCards(data.articles)
+  //     })
+  //     .catch((err) => {
+  //       console.log(`can't get news: ${err}`)
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false)
+  //     })
+  // }
+
+  // useEffect(() => {
+  //   api
+  //     .getNews()
+  //     .then((data) => {
+  //       console.log(data)
+  //       setCards(data.articles)
+  //     })
+  //     .catch((err) => {
+  //       console.log(`can't get news: ${err}`)
+  //     })
+  // }, [])
+
+  useEffect(() => {
+    if (location.pathname === '/saved-news') {
+      setBrightTheme(true)
+    } else {
+      setBrightTheme(false)
+    }
+  }, [location.pathname])
+
+  useEffect(() => {
+    // api
+    //   .getUserInfo()
+    //   .then((currentUser) => {
+    //     console.log(currentUser)
+    //     setCurrentUser(currentUser)
+    //   })
+    //   .catch((err) => {
+    //     console.log(`can't get inital user info: ${err}`)
+    //   })
+
+    setCurrentUser({ name: 'example' })
+  }, [])
+
+  function handleSearchNews(searchTerm) {
+    console.log('search run', searchTerm)
     api
       .getNews(searchTerm)
       .then((data) => {
@@ -45,18 +106,7 @@ export default function App() {
       .catch((err) => {
         console.log(`can't get news: ${err}`)
       })
-      .finally(() => {
-        setIsLoading(false)
-      })
   }
-
-  useEffect(() => {
-    if (location.pathname === '/saved-news') {
-      setBrightTheme(true)
-    } else {
-      setBrightTheme(false)
-    }
-  }, [location.pathname])
 
   function handleCloseAllPopups(e) {
     if (
@@ -129,60 +179,14 @@ export default function App() {
     //     setError(true)
     //   })
   }
-  function onSignIn() {
-    setIsAuthFormOpen(true)
-  }
 
   return (
-    <div className={`App `}>
-      <Routes>
-        <Route
-          exact
-          path='/'
-          element={
-            <>
-              <Navigation
-                currentPath={location.pathname}
-                brightTheme={brightTheme}
-                loggedIn={isLoggedIn}
-                onSignIn={onSignIn}
-                setIsLoggedIn={setIsLoggedIn}
-              />
-              <Header brightTheme={brightTheme} />
-              <Main
-                cards={cards}
-                isSignedIn={isLoggedIn}
-                setIsAuthModalOpen={setIsAuthFormOpen}
-              />
-              <About />
-
-              <ModalWithForm
-                isOpen={isAuthFormOpen}
-                onClose={handleCloseAllPopups}
-                message={message}
-                handleOnRegisterSubmit={handleRegisterSubmit}
-                handleOnSigninSubmit={handleSigninSubmit}
-                isSuccess={isSuccess}
-                isLoggedIn={isLoggedIn}
-                setIsLoggedIn={setIsLoggedIn}
-                setIsAuthFormOpen={setIsAuthFormOpen}
-              />
-              <InfoTooltip
-                isOpen={isInfoTooltipOpen}
-                setIsOpen={setIsInfoTooltipOpen}
-                onClose={handleCloseAllPopups}
-                message={message}
-                setIsSignInOpen={setIsAuthFormOpen}
-                isSuccess={isSuccess}
-              />
-              <Footer />
-            </>
-          }
-        />
-
-        <Route element={<ProtectedRoute loggedIn={isLoggedIn} />}>
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className={`App `}>
+        <Routes>
           <Route
-            path='saved-news'
+            exact
+            path='/'
             element={
               <>
                 <Navigation
@@ -192,16 +196,72 @@ export default function App() {
                   onSignIn={onSignIn}
                   setIsLoggedIn={setIsLoggedIn}
                 />
-                <SavedNewsHeader />
-                <SavedNews />
+                <Header
+                  brightTheme={brightTheme}
+                  handleOnSearch={handleSearchNews}
+                />
+                <Main
+                  cards={cards}
+                  isSignedIn={isLoggedIn}
+                  setIsAuthModalOpen={setIsAuthFormOpen}
+                  savedCards={savedCards}
+                  setSavedCards={setSavedCards}
+                />
+                <About />
+
+                <ModalWithForm
+                  isOpen={isAuthFormOpen}
+                  onClose={handleCloseAllPopups}
+                  message={message}
+                  handleOnRegisterSubmit={handleRegisterSubmit}
+                  handleOnSigninSubmit={handleSigninSubmit}
+                  isSuccess={isSuccess}
+                  isLoggedIn={isLoggedIn}
+                  setIsLoggedIn={setIsLoggedIn}
+                  setIsAuthFormOpen={setIsAuthFormOpen}
+                />
+                <InfoTooltip
+                  isOpen={isInfoTooltipOpen}
+                  setIsOpen={setIsInfoTooltipOpen}
+                  onClose={handleCloseAllPopups}
+                  message={message}
+                  setIsSignInOpen={setIsAuthFormOpen}
+                  isSuccess={isSuccess}
+                />
                 <Footer />
               </>
             }
           />
-        </Route>
 
-        <Route path='*' element={<Navigate to='/' replace />} />
-      </Routes>
-    </div>
+          <Route element={<ProtectedRoute loggedIn={isLoggedIn} />}>
+            <Route
+              path='saved-news'
+              element={
+                <>
+                  <Navigation
+                    currentPath={location.pathname}
+                    brightTheme={brightTheme}
+                    loggedIn={isLoggedIn}
+                    onSignIn={onSignIn}
+                    setIsLoggedIn={setIsLoggedIn}
+                  />
+                  <SavedNewsHeader savedCards={savedCards} />
+                  <SavedNews
+                    savedCards={savedCards}
+                    keyword='apple'
+                    isSignedIn={isLoggedIn}
+                    setIsAuthModalOpen={setIsAuthFormOpen}
+                    setSavedCards={setSavedCards}
+                  />
+                  <Footer />
+                </>
+              }
+            />
+          </Route>
+
+          <Route path='*' element={<Navigate to='/' replace />} />
+        </Routes>
+      </div>
+    </CurrentUserContext.Provider>
   )
 }
