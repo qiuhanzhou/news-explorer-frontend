@@ -1,5 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
+import { SavedCardsContext } from '../../context/SavedCardsContext'
 import './NewsCard.css'
+
+import { SearchTermContext } from '../../context/SearchTermContext'
 
 const months = [
   'January',
@@ -21,21 +24,21 @@ export default function NewsCard({
   isSignedIn,
   setIsAuthModalOpen,
   isCardTypeSavedNews,
-  savedCards,
-  setSavedCards,
-  keyword,
 }) {
+  const { savedCards, setSavedCards } = useContext(SavedCardsContext)
+  const { searchTerm } = useContext(SearchTermContext)
+
   const [isTooptipShown, setIsTooptipShown] = useState(false)
   const [isCardSaved, setIsCardSaved] = useState(false)
 
-  //update isCardSaved status upon mounting
+  //update isCardSaved status upon rerendering
   useEffect(() => {
-    if (savedCards.some((item) => item.url === card.url)) {
+    if (savedCards && savedCards.some((item) => item.url === card.url)) {
       setIsCardSaved(true)
     } else {
       setIsCardSaved(false)
     }
-  }, [savedCards])
+  }, [savedCards, card])
 
   function handleSaveClick(e) {
     if (!isSignedIn) {
@@ -43,23 +46,23 @@ export default function NewsCard({
     } else {
       if (!isCardSaved) {
         setIsCardSaved(true)
-        setSavedCards([...savedCards, card])
+        setSavedCards([...savedCards, { ...card, keyword: searchTerm }])
       } else {
         setIsCardSaved(false)
-        savedCards = savedCards.filter((item) => {
+        const newSavedCards = savedCards.filter((item) => {
           console.log(item.url)
           return item.url !== card.url
         })
-        setSavedCards([...savedCards])
+        setSavedCards([...newSavedCards])
       }
     }
   }
   function handleDeleteClick() {
-    savedCards = savedCards.filter((item) => {
+    const newSavedCards = savedCards.filter((item) => {
       console.log(item.url)
       return item.url !== card.url
     })
-    setSavedCards([...savedCards])
+    setSavedCards([...newSavedCards])
   }
 
   function convertDate(timestr) {
@@ -86,7 +89,7 @@ export default function NewsCard({
 
       {isCardTypeSavedNews && (
         <>
-          <div class='card__keyword'>{keyword}</div>
+          <div className='card__keyword'>{card.keyword}</div>
           <button
             type='button'
             aria-label='delete'

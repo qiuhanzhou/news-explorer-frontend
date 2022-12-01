@@ -3,13 +3,22 @@ import ReactDOM from 'react-dom/client'
 import App from './components/App/App'
 import reportWebVitals from './reportWebVitals'
 import { BrowserRouter } from 'react-router-dom'
+import { SavedCardsProvider } from './context/SavedCardsContext'
+import { CurrentUserProvider } from './context/CurrentUserContext'
+import { SearchTermProvider } from './context/SearchTermContext'
 
 import './index.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <BrowserRouter>
-    <App />
+    <CurrentUserProvider>
+      <SavedCardsProvider>
+        <SearchTermProvider>
+          <App />
+        </SearchTermProvider>
+      </SavedCardsProvider>
+    </CurrentUserProvider>
   </BrowserRouter>,
 )
 

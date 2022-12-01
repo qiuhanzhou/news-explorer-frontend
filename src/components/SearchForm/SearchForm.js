@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import './SearchForm.css'
+import { SearchTermContext } from '../../context/SearchTermContext'
+import { useContext } from 'react'
 
 export default function SearchForm({ handleOnSearch }) {
-  const [searchTerm, setSearchTerm] = useState('')
+  const { searchTerm, setSearchTerm } = useContext(SearchTermContext)
 
   function handleChange(e) {
     setSearchTerm(e.target.value)
@@ -10,8 +12,10 @@ export default function SearchForm({ handleOnSearch }) {
 
   function handleSubmit(e) {
     e.preventDefault()
+    console.log(searchTerm)
     handleOnSearch(searchTerm)
   }
+
   return (
     <form className='search-form'>
       <input

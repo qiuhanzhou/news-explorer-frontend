@@ -127,22 +127,20 @@
   border-radius: 10px;
   box-sizing: border-box;
   color: #000;
-  font-family: Roboto, Arial, sans-serif;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
-  left: 15px;
-  line-height: 1.71;
+  line-height: 24px;
   margin: 0;
   max-width: 130px;
   min-height: 40px;
   overflow: hidden;
-  padding: 7.5px 20px 0;
+  padding: 8px 22px;
   position: absolute;
+  top: 24px;
+  left: 24px;
   text-align: center;
   text-overflow: ellipsis;
   text-transform: capitalize;
-  top: 18px;
   white-space: nowrap;
 }
 
@@ -190,6 +188,11 @@
   .card__tooltip-container {
     top: 8px;
     right: 49px;
+  }
+  .card__keyword {
+    top: 8px;
+    left: 8px;
+    max-width: 120px;
   }
 
   .card__title {

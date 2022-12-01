@@ -3,13 +3,7 @@ import Preloader from '../Preloader'
 import NewsCardList from '../NewsCardList/NewsCardList'
 import { useState } from 'react'
 
-export default function Main({
-  cards,
-  isSignedIn,
-  setIsAuthModalOpen,
-  savedCards,
-  setSavedCards,
-}) {
+export default function Main({ cards, isSignedIn, setIsAuthModalOpen }) {
   const [searchSuccess, setSearchSuccess] = useState(true)
 
   return (
@@ -21,8 +15,6 @@ export default function Main({
             cards={cards}
             isSignedIn={isSignedIn}
             setIsAuthModalOpen={setIsAuthModalOpen}
-            savedCards={savedCards}
-            setSavedCards={setSavedCards}
           />
         </div>
       )}

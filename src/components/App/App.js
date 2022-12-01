@@ -9,7 +9,7 @@ import {
   Link,
   useLocation,
 } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import SavedNews from '../SavedNews/SavedNews'
 import Header from '../Header/Header'
 import Main from '../Main/Main'
@@ -22,6 +22,7 @@ import About from '../About/About'
 import Footer from '../Footer/Footer'
 import api from '../../utils/newsApi'
 import { CurrentUserContext } from '../../context/CurrentUserContext'
+import { SavedCardsContext } from '../../context/SavedCardsContext'
 
 export default function App() {
   const location = useLocation()
@@ -33,12 +34,18 @@ export default function App() {
   const [isSuccess, setIsSuccess] = useState(false)
   const [message, setMessage] = useState('')
   const [cards, setCards] = useState([])
-  const [savedCards, setSavedCards] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const [currentUser, setCurrentUser] = useState({})
+
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext)
+  const { savedCards, setSavedCards } = useContext(SavedCardsContext)
+
+  console.log(currentUser, savedCards)
 
   useEffect(() => {
-    setSavedCards(JSON.parse(localStorage.getItem('saved-cards')))
+    const parsed = JSON.parse(localStorage.getItem('saved-cards'))
+    if (parsed !== null) {
+      setSavedCards(parsed)
+    }
   }, [])
 
   useEffect(() => {
@@ -81,6 +88,7 @@ export default function App() {
     }
   }, [location.pathname])
 
+  // mimic calling api to get current user info upon App mounting
   useEffect(() => {
     // api
     //   .getUserInfo()
@@ -181,12 +189,58 @@ export default function App() {
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <div className={`App `}>
-        <Routes>
+    <div className={`App `}>
+      <Routes>
+        <Route
+          exact
+          path='/'
+          element={
+            <>
+              <Navigation
+                currentPath={location.pathname}
+                brightTheme={brightTheme}
+                loggedIn={isLoggedIn}
+                onSignIn={onSignIn}
+                setIsLoggedIn={setIsLoggedIn}
+              />
+              <Header
+                brightTheme={brightTheme}
+                handleOnSearch={handleSearchNews}
+              />
+              <Main
+                cards={cards}
+                isSignedIn={isLoggedIn}
+                setIsAuthModalOpen={setIsAuthFormOpen}
+              />
+              <About />
+
+              <ModalWithForm
+                isOpen={isAuthFormOpen}
+                onClose={handleCloseAllPopups}
+                message={message}
+                handleOnRegisterSubmit={handleRegisterSubmit}
+                handleOnSigninSubmit={handleSigninSubmit}
+                isSuccess={isSuccess}
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
+                setIsAuthFormOpen={setIsAuthFormOpen}
+              />
+              <InfoTooltip
+                isOpen={isInfoTooltipOpen}
+                setIsOpen={setIsInfoTooltipOpen}
+                onClose={handleCloseAllPopups}
+                message={message}
+                setIsSignInOpen={setIsAuthFormOpen}
+                isSuccess={isSuccess}
+              />
+              <Footer />
+            </>
+          }
+        />
+
+        <Route element={<ProtectedRoute loggedIn={isLoggedIn} />}>
           <Route
-            exact
-            path='/'
+            path='saved-news'
             element={
               <>
                 <Navigation
@@ -196,72 +250,19 @@ export default function App() {
                   onSignIn={onSignIn}
                   setIsLoggedIn={setIsLoggedIn}
                 />
-                <Header
-                  brightTheme={brightTheme}
-                  handleOnSearch={handleSearchNews}
-                />
-                <Main
-                  cards={cards}
+                <SavedNewsHeader />
+                <SavedNews
                   isSignedIn={isLoggedIn}
                   setIsAuthModalOpen={setIsAuthFormOpen}
-                  savedCards={savedCards}
-                  setSavedCards={setSavedCards}
-                />
-                <About />
-
-                <ModalWithForm
-                  isOpen={isAuthFormOpen}
-                  onClose={handleCloseAllPopups}
-                  message={message}
-                  handleOnRegisterSubmit={handleRegisterSubmit}
-                  handleOnSigninSubmit={handleSigninSubmit}
-                  isSuccess={isSuccess}
-                  isLoggedIn={isLoggedIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                  setIsAuthFormOpen={setIsAuthFormOpen}
-                />
-                <InfoTooltip
-                  isOpen={isInfoTooltipOpen}
-                  setIsOpen={setIsInfoTooltipOpen}
-                  onClose={handleCloseAllPopups}
-                  message={message}
-                  setIsSignInOpen={setIsAuthFormOpen}
-                  isSuccess={isSuccess}
                 />
                 <Footer />
               </>
             }
           />
+        </Route>
 
-          <Route element={<ProtectedRoute loggedIn={isLoggedIn} />}>
-            <Route
-              path='saved-news'
-              element={
-                <>
-                  <Navigation
-                    currentPath={location.pathname}
-                    brightTheme={brightTheme}
-                    loggedIn={isLoggedIn}
-                    onSignIn={onSignIn}
-                    setIsLoggedIn={setIsLoggedIn}
-                  />
-                  <SavedNewsHeader savedCards={savedCards} />
-                  <SavedNews
-                    savedCards={savedCards}
-                    keyword='apple'
-                    isSignedIn={isLoggedIn}
-                    setIsAuthModalOpen={setIsAuthFormOpen}
-                    setSavedCards={setSavedCards}
-                  />
-                  <Footer />
-                </>
-              }
-            />
-          </Route>
-
-          <Route path='*' element={<Navigate to='/' replace />} />
-        </Routes>
-      </div>
-    </CurrentUserContext.Provider>
+        <Route path='*' element={<Navigate to='/' replace />} />
+      </Routes>
+    </div>
   )
 }

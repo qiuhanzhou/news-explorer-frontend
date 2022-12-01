@@ -18,7 +18,7 @@ export default function Navigation({
   onSignIn,
   setIsLoggedIn,
 }) {
-  const { name } = useContext(CurrentUserContext)
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext)
 
   const [width, setWidth] = useState(window.innerWidth)
   const [burgerOpen, setBurgerOpen] = useState(false)
@@ -106,7 +106,7 @@ export default function Navigation({
                   className='navigation__button navigation__button_type_signout'
                   onClick={onSignOut}
                 >
-                  {name}
+                  {currentUser.name}
                   <img
                     src={
                       currentPath === '/saved-news'
@@ -180,7 +180,7 @@ export default function Navigation({
               className='navigation_burger-nav_button'
               onClick={onSignOut}
             >
-              {name}
+              {currentUser.name}
               <img
                 src={logOutIconWhite}
                 alt='signout icon'

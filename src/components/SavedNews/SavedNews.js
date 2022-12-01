@@ -1,24 +1,21 @@
 import './SavedNews.css'
 import NewsCard from '../NewsCard/NewsCard'
-export default function SavedNews({
-  savedCards,
-  keyword,
-  isSignedIn,
-  setIsAuthModalOpen,
-  setSavedCards,
-}) {
+import { useContext } from 'react'
+import { SavedCardsContext } from '../../context/SavedCardsContext'
+
+export default function SavedNews({ isSignedIn, setIsAuthModalOpen }) {
+  const { savedCards } = useContext(SavedCardsContext)
+
   return (
     <section className='saved-news'>
       <ul className='card-list'>
-        {savedCards.map((card) => (
+        {savedCards.map((card, i) => (
           <NewsCard
+            key={i}
             card={card}
             isSignedIn={isSignedIn}
             setIsAuthModalOpen={setIsAuthModalOpen}
-            keyword={keyword}
             isCardTypeSavedNews={true}
-            savedCards={savedCards}
-            setSavedCards={setSavedCards}
           />
         ))}
       </ul>

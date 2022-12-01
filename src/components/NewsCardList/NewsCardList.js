@@ -7,8 +7,6 @@ export default function NewsCardList({
   cards,
   isSignedIn,
   setIsAuthModalOpen,
-  savedCards,
-  setSavedCards,
 }) {
   const [count, setCount] = useState(3)
   const [toBeRenderedCards, setToBeRendedCards] = useState(
@@ -32,8 +30,6 @@ export default function NewsCardList({
             card={card}
             isSignedIn={isSignedIn}
             setIsAuthModalOpen={setIsAuthModalOpen}
-            savedCards={savedCards}
-            setSavedCards={setSavedCards}
             isCardTypeSavedNews={false}
           />
         ))}
