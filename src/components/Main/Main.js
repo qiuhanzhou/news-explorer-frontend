@@ -1,14 +1,24 @@
 import './Main.css'
-import Preloader from '../Preloader'
+import NothingFound from '../NothingFound/NothingFound'
+import Preloader from '../Preloader/Preloader'
 import NewsCardList from '../NewsCardList/NewsCardList'
 import { useState } from 'react'
 
-export default function Main({ cards, isSignedIn, setIsAuthModalOpen }) {
-  const [searchSuccess, setSearchSuccess] = useState(true)
-
+export default function Main({
+  cards,
+  isSignedIn,
+  setIsAuthModalOpen,
+  isLoading,
+  isSearchSuccessful,
+  isSearchBegan,
+}) {
   return (
     <main className='main'>
-      {searchSuccess && (
+      {isLoading && <Preloader />}
+
+      {isSearchBegan && !isSearchSuccessful && <NothingFound />}
+
+      {isSearchBegan && isSearchSuccessful && (
         <div className='main__results'>
           <h1 className='main__results_title'>Search Results</h1>
           <NewsCardList
@@ -18,7 +28,6 @@ export default function Main({ cards, isSignedIn, setIsAuthModalOpen }) {
           />
         </div>
       )}
-      <Preloader />
     </main>
   )
 }

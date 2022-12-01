@@ -35,6 +35,8 @@ export default function App() {
   const [message, setMessage] = useState('')
   const [cards, setCards] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isSearchBegan, setIsSearchBegan] = useState(false)
+  const [isSearchSuccessful, setIsSearchSuccessful] = useState(false)
 
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext)
   const { savedCards, setSavedCards } = useContext(SavedCardsContext)
@@ -51,34 +53,6 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('saved-cards', JSON.stringify(savedCards))
   }, [savedCards])
-
-  // function serachNews(searchTerm) {
-  //   setIsLoading(true)
-  //   api
-  //     .getNews('apple')
-  //     .then((data) => {
-  //       console.log(data)
-  //       setCards(data.articles)
-  //     })
-  //     .catch((err) => {
-  //       console.log(`can't get news: ${err}`)
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false)
-  //     })
-  // }
-
-  // useEffect(() => {
-  //   api
-  //     .getNews()
-  //     .then((data) => {
-  //       console.log(data)
-  //       setCards(data.articles)
-  //     })
-  //     .catch((err) => {
-  //       console.log(`can't get news: ${err}`)
-  //     })
-  // }, [])
 
   useEffect(() => {
     if (location.pathname === '/saved-news') {
@@ -104,15 +78,25 @@ export default function App() {
   }, [])
 
   function handleSearchNews(searchTerm) {
-    console.log('search run', searchTerm)
+    setIsLoading(true)
+    setIsSearchBegan(true)
     api
       .getNews(searchTerm)
       .then((data) => {
-        console.log(data)
+        console.log(data.articles)
         setCards(data.articles)
+        if (data.articles.length) {
+          setIsSearchSuccessful(true)
+        } else {
+          setIsSearchSuccessful(false)
+        }
       })
       .catch((err) => {
         console.log(`can't get news: ${err}`)
+        setIsSearchSuccessful(false)
+      })
+      .finally(() => {
+        setIsLoading(false)
       })
   }
 
@@ -211,6 +195,9 @@ export default function App() {
                 cards={cards}
                 isSignedIn={isLoggedIn}
                 setIsAuthModalOpen={setIsAuthFormOpen}
+                isLoading={isLoading}
+                isSearchSuccessful={isSearchSuccessful}
+                isSearchBegan={isSearchBegan}
               />
               <About />
 

@@ -14,6 +14,7 @@ export default function SavedNewsHeader({ keyword }) {
 
   const keywords = savedCards.map((card) => card.keyword)
   const uniqueKeywords = [...new Set(keywords)]
+  console.log(uniqueKeywords)
 
   return (
     <div className='saved-news-header'>
@@ -22,7 +23,7 @@ export default function SavedNewsHeader({ keyword }) {
       <p className='saved-news-header__keywords'>
         By keywords&#58;&nbsp;
         <span className='saved-news-header__keywords-bold'>
-          {`${uniqueKeywords.splice(0, 2).join(', ')} and ${
+          {`${uniqueKeywords.slice(0, 2).join(', ')} and ${
             uniqueKeywords.length - 2
           } ${uniqueKeywords.length - 2 > 1 ? 'others' : 'other'}`}
         </span>
