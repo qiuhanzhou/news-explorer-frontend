@@ -13,7 +13,7 @@ export default function Footer({}) {
           <a className='footer__link' href='/'>
             Home
           </a>
-          <a className='footer__link' href='https://' target='_blank'>
+          <a className='footer__link' href='' target='_blank'>
             Portfolio
           </a>{' '}
         </div>
@@ -32,7 +32,7 @@ export default function Footer({}) {
           </a>
           <a
             className='footer__link_icon'
-            href='https://facebook/qiuhanzhou'
+            href='https://www.linkedin.com/in/qiuhan-karen-zhou/'
             target='__blank'
             alt='Facebook Icon'
           >

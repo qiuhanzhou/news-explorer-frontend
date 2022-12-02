@@ -16,7 +16,7 @@ export default function Main({
     <main className='main'>
       {isLoading && <Preloader />}
 
-      {isSearchBegan && !isSearchSuccessful && <NothingFound />}
+      {isSearchBegan && !isSearchSuccessful && !isLoading && <NothingFound />}
 
       {isSearchBegan && isSearchSuccessful && (
         <div className='main__results'>

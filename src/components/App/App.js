@@ -227,7 +227,7 @@ export default function App() {
 
         <Route element={<ProtectedRoute loggedIn={isLoggedIn} />}>
           <Route
-            path='saved-news'
+            path='/saved-news'
             element={
               <>
                 <Navigation
