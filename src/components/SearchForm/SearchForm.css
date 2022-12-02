@@ -65,6 +65,9 @@
   color: #1a1b22;
 }
 
+.search-form__input_error {
+  color: red;
+}
 .search-form__input::placeholder {
   color: #b6bcbf;
 }

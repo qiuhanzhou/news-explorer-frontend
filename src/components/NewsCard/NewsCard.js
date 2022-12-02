@@ -95,16 +95,26 @@ export default function NewsCard({
             aria-label='delete'
             className='card__delete-button'
             onClick={handleDeleteClick}
+            onMouseEnter={() => setIsTooptipShown(true)}
+            onMouseLeave={() => setIsTooptipShown(false)}
           ></button>
         </>
       )}
 
       <div
         className={`card__tooltip-container ${
-          isTooptipShown && !isSignedIn ? 'card__tooltip-container_shown' : ''
+          (isTooptipShown && !isSignedIn) ||
+          (isCardTypeSavedNews && isTooptipShown)
+            ? 'card__tooltip-container_shown'
+            : ''
         }`}
       >
-        <p className='card__tooltip'> Sign in to save articles</p>
+        <p className='card__tooltip'>
+          {' '}
+          {!isCardTypeSavedNews
+            ? 'Sign in to save articles'
+            : 'Remove from saved '}
+        </p>
       </div>
 
       <a className='card__link' href={card.url} target='_blank'>

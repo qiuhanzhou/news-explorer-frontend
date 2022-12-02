@@ -23,9 +23,12 @@ export default function SavedNewsHeader({ keyword }) {
       <p className='saved-news-header__keywords'>
         By keywords&#58;&nbsp;
         <span className='saved-news-header__keywords-bold'>
-          {`${uniqueKeywords.slice(0, 2).join(', ')} and ${
-            uniqueKeywords.length - 2
-          } ${uniqueKeywords.length - 2 > 1 ? 'others' : 'other'}`}
+          {uniqueKeywords.length > 2
+            ? `${uniqueKeywords.slice(0, 2).join(', ')} and ${
+                uniqueKeywords.length - 2
+              }
+          ${uniqueKeywords.length - 2 > 1 ? 'others' : 'other'}`
+            : uniqueKeywords.slice(0, 2).join(', ')}
         </span>
       </p>
     </div>

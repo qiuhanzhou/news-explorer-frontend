@@ -8,9 +8,9 @@ export default function Main({
   cards,
   isSignedIn,
   setIsAuthModalOpen,
-  isLoading,
   isSearchSuccessful,
   isSearchBegan,
+  isLoading,
 }) {
   return (
     <main className='main'>

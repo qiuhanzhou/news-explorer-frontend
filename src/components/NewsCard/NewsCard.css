@@ -10,6 +10,7 @@
 }
 
 .card__img {
+  display: block;
   border-top-left-radius: 4%;
   border-top-right-radius: 4%;
   height: 272px;
