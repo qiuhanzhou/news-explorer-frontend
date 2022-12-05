@@ -1,19 +1,17 @@
 import './ModalWithForm.css'
 import { useState } from 'react'
-import { useRef, useEffect } from 'react'
 import useForm from '../../utils/useForm'
 import Modal from '../Modal/Modal'
 
 export default function ModalWithForm({
   isOpen,
   onClose,
-  handleOnRegisterSubmit,
-  handleOnSigninSubmit,
-  isSuccess,
-  message,
-  isLoggedIn,
   setIsLoggedIn,
   setIsAuthFormOpen,
+  isSignUpSuccess,
+  setIsSignUpSuccess,
+  setIsSignin,
+  isSignin,
 }) {
   //set states with input values on input change
   const { values, handleChange } = useForm({
@@ -30,7 +28,7 @@ export default function ModalWithForm({
     password: '',
     username: '',
   })
-  const [isSignin, setIsSignIn] = useState(true)
+  const [showServerMessage, setShowServerMessage] = useState(false)
 
   //form validation
   const handleCheckInputValidity = (e) => {
@@ -47,6 +45,7 @@ export default function ModalWithForm({
     }
   }
 
+  //mimic  successful api call to sign in / sign up
   function onSubmit(e) {
     e.preventDefault()
 
@@ -58,7 +57,15 @@ export default function ModalWithForm({
     //   }
     // }
 
-    setIsLoggedIn(!isLoggedIn)
+    if (isSignin) {
+      //onLogin
+      setIsLoggedIn(true)
+    } else {
+      //onSignup
+      setShowServerMessage(true)
+      setIsSignUpSuccess(true)
+    }
+
     setIsAuthFormOpen(false)
   }
 
@@ -127,7 +134,11 @@ export default function ModalWithForm({
             </span>
           </label>
         )}
-        {!isSuccess && <p className='modal-form__server-error'>{message}</p>}
+
+        {!isSignUpSuccess && showServerMessage && (
+          <p className='modal-form__server-error'>Email is not valid</p>
+        )}
+
         <button
           type='submit'
           aria-label='submit'
@@ -136,17 +147,19 @@ export default function ModalWithForm({
           }`}
           children={`${isSignin ? 'Sign in' : 'Sign up'}`}
         ></button>
+
         <p className='modal-form__redirect'>
           or{' '}
-          <a
+          <button
+            type='button'
             onClick={() => {
-              setIsSignIn(!isSignin)
+              setIsSignin(!isSignin)
             }}
             className='modal-form__redirect-link'
           >
             {' '}
             {!isSignin ? 'Sign in' : 'Sign up'}
-          </a>
+          </button>
         </p>
       </form>
     </Modal>

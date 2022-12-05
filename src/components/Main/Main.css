@@ -10,7 +10,7 @@
   margin: auto;
 }
 .main__results_title {
-  font-family: 'Roboto Slab';
+  font-family: 'Roboto Slab', Arial, sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 40px;
@@ -35,5 +35,6 @@
   }
   .main__results_title {
     margin: 0 0 58px;
+    padding: 0px;
   }
 }

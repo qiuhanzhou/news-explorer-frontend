@@ -1,6 +1,6 @@
 import author from '../../images/author.jpg'
 import './About.css'
-export default function About({}) {
+export default function About() {
   return (
     <section className='about'>
       <img className='about__author' src={author} alt='author'></img>

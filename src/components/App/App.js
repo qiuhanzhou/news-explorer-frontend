@@ -1,14 +1,6 @@
 import './App.css'
 
-import {
-  Route,
-  Routes,
-  Navigate,
-  useHistory,
-  withRouter,
-  Link,
-  useLocation,
-} from 'react-router-dom'
+import { Route, Routes, Navigate, useLocation } from 'react-router-dom'
 import { useState, useEffect, useContext } from 'react'
 import SavedNews from '../SavedNews/SavedNews'
 import Header from '../Header/Header'
@@ -31,12 +23,12 @@ export default function App() {
   const [brightTheme, setBrightTheme] = useState(null)
   const [isAuthFormOpen, setIsAuthFormOpen] = useState(false)
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
-  const [message, setMessage] = useState('')
   const [cards, setCards] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isSearchBegan, setIsSearchBegan] = useState(false)
   const [isSearchSuccessful, setIsSearchSuccessful] = useState(false)
+  const [isSignUpSuccess, setIsSignUpSuccess] = useState(false)
+  const [isSignin, setIsSignin] = useState(true)
 
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext)
   const { savedCards, setSavedCards } = useContext(SavedCardsContext)
@@ -44,11 +36,15 @@ export default function App() {
   console.log(currentUser, savedCards)
 
   useEffect(() => {
+    if (isSignUpSuccess) setIsInfoTooltipOpen(true)
+  }, [isSignUpSuccess, setIsInfoTooltipOpen])
+
+  useEffect(() => {
     const parsed = JSON.parse(localStorage.getItem('saved-cards'))
     if (parsed !== null) {
       setSavedCards(parsed)
     }
-  }, [])
+  }, [setSavedCards])
 
   useEffect(() => {
     localStorage.setItem('saved-cards', JSON.stringify(savedCards))
@@ -75,7 +71,7 @@ export default function App() {
     //   })
 
     setCurrentUser({ name: 'example' })
-  }, [])
+  }, [setCurrentUser])
 
   function handleSearchNews(searchTerm) {
     setIsLoading(true)
@@ -204,21 +200,22 @@ export default function App() {
               <ModalWithForm
                 isOpen={isAuthFormOpen}
                 onClose={handleCloseAllPopups}
-                message={message}
                 handleOnRegisterSubmit={handleRegisterSubmit}
                 handleOnSigninSubmit={handleSigninSubmit}
-                isSuccess={isSuccess}
                 isLoggedIn={isLoggedIn}
                 setIsLoggedIn={setIsLoggedIn}
                 setIsAuthFormOpen={setIsAuthFormOpen}
+                isSignUpSuccess={isSignUpSuccess}
+                setIsSignUpSuccess={setIsSignUpSuccess}
+                setIsSignin={setIsSignin}
+                isSignin={isSignin}
               />
               <InfoTooltip
                 isOpen={isInfoTooltipOpen}
                 setIsOpen={setIsInfoTooltipOpen}
                 onClose={handleCloseAllPopups}
-                message={message}
-                setIsSignInOpen={setIsAuthFormOpen}
-                isSuccess={isSuccess}
+                setIsAuthFormOpen={setIsAuthFormOpen}
+                setIsSignin={setIsSignin}
               />
               <Footer />
             </>

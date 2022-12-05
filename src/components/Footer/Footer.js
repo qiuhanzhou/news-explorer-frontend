@@ -2,7 +2,7 @@ import githubIcon from '../../images/github.svg'
 import linkedInIcon from '../../images/linkedin.png'
 import './Footer.css'
 
-export default function Footer({}) {
+export default function Footer() {
   return (
     <footer className='footer'>
       <p className='footer__copyright'>
@@ -13,15 +13,21 @@ export default function Footer({}) {
           <a className='footer__link' href='/'>
             Home
           </a>
-          <a className='footer__link' href='' target='_blank'>
+          <a
+            className='footer__link'
+            href='https://github.com/qiuhanzhou'
+            target='_blank'
+            rel='noreferrer'
+          >
             Portfolio
           </a>{' '}
         </div>
         <div className='footer__icons-wrapper'>
           <a
-            className='footer__link_icon'
+            className='footer__link_type_icon'
             href='https://github.com/qiuhanzhou'
             target='__blank'
+            rel='noreferrer'
             alt='GitHub Icon'
           >
             <img
@@ -31,9 +37,10 @@ export default function Footer({}) {
             />
           </a>
           <a
-            className='footer__link_icon'
+            className='footer__link_type_icon'
             href='https://www.linkedin.com/in/qiuhan-karen-zhou/'
             target='__blank'
+            rel='noreferrer'
             alt='Facebook Icon'
           >
             <img

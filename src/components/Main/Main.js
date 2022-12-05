@@ -2,7 +2,6 @@ import './Main.css'
 import NothingFound from '../NothingFound/NothingFound'
 import Preloader from '../Preloader/Preloader'
 import NewsCardList from '../NewsCardList/NewsCardList'
-import { useState } from 'react'
 
 export default function Main({
   cards,
@@ -20,7 +19,7 @@ export default function Main({
 
       {isSearchBegan && isSearchSuccessful && (
         <div className='main__results'>
-          <h1 className='main__results_title'>Search Results</h1>
+          <h2 className='main__results_title'>Search Results</h2>
           <NewsCardList
             cards={cards}
             isSignedIn={isSignedIn}

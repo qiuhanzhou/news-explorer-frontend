@@ -4,23 +4,28 @@ import Modal from '../Modal/Modal'
 export default function InfoToolTip({
   isOpen,
   setIsOpen,
-  setIsSignInOpen,
   onClose,
-  message,
-  isSuccess,
+  setIsAuthFormOpen,
+  setIsSignin,
 }) {
-  function onCloseInfoTooltip(e) {
+  function onCloseInfoTooltip() {
     console.log('on close info')
     setIsOpen(false)
-    setIsSignInOpen(true)
+    setIsAuthFormOpen(true)
+    setIsSignin(true)
   }
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className='infotooltip'>
-        {isSuccess && <p className='infotooltip__message'>{message}</p>}
-        <a onClick={onCloseInfoTooltip} className='infotooltip__redirect-link'>
+        <p className='infotooltip__message'>
+          Registration successfully completed!
+        </p>
+        <button
+          onClick={onCloseInfoTooltip}
+          className='infotooltip__redirect-link'
+        >
           Sign in
-        </a>
+        </button>
       </div>
     </Modal>
   )

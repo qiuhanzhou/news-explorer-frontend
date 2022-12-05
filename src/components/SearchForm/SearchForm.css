@@ -16,7 +16,7 @@
 
 @media screen and (max-width: 700px) {
   .search-form {
-    margin: 122px auto;
+    margin: 122px auto 32px;
     height: 128px;
     max-width: 288px;
   }
@@ -36,11 +36,15 @@
   font-weight: 500;
   font-size: 18px;
   line-height: 24px;
-  cursor: pointer;
+  transition: all 0.2s linear;
 }
 
-.search-form__button:active {
+.search-form__button:focus {
   background: #2a65cc;
+}
+.search-form__button:hover {
+  background: #347eff;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 700px) {

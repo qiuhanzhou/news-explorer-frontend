@@ -18,7 +18,7 @@ export default function Navigation({
   onSignIn,
   setIsLoggedIn,
 }) {
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext)
+  const { currentUser } = useContext(CurrentUserContext)
 
   const [width, setWidth] = useState(window.innerWidth)
   const [burgerOpen, setBurgerOpen] = useState(false)
@@ -92,7 +92,7 @@ export default function Navigation({
               <>
                 <Link
                   to='/saved-news'
-                  className={`navigation__link navigation__link_type_saved${
+                  className={`navigation__link navigation__link_type_saved ${
                     currentPath === '/saved-news'
                       ? 'navigation__link_type_focus'
                       : ''

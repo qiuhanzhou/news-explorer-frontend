@@ -44,7 +44,7 @@
 .header__title {
   margin: auto;
   padding: 160px 0 32px;
-  font-family: 'Roboto Slab';
+  font-family: 'Roboto Slab', Arial, sans-serif;
   font-weight: 400;
   font-size: 60px;
   line-height: 64px;
@@ -73,7 +73,12 @@
     padding: 86px 0 16px;
   }
 }
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 380px) {
+  .header {
+    background: url(../../images/georgia-de-lotz--UsJoNxLaNo-unsplash.svg)
+      no-repeat;
+    background-size: cover;
+  }
   .header__title {
     margin-left: 19px;
   }

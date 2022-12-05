@@ -117,19 +117,34 @@ export default function NewsCard({
         </p>
       </div>
 
-      <a className='card__link' href={card.url} target='_blank'>
+      <a
+        className='card__link'
+        href={card.url}
+        target='_blank'
+        rel='noreferrer'
+      >
         <img
           className='card__img'
           src={card.urlToImage}
-          alt='card news headline image'
+          alt='card news headline'
         />
       </a>
       <div className='card__content'>
         <p className='card__date'>{convertDate(card.publishedAt)}</p>
-        <a className='card__link' href={card.url} target='_blank'>
+        <a
+          className='card__link'
+          href={card.url}
+          target='_blank'
+          rel='noreferrer'
+        >
           <h2 className='card__title'>{card.title}</h2>
         </a>
-        <a className='card__link' href={card.url} target='_blank'>
+        <a
+          className='card__link'
+          href={card.url}
+          target='_blank'
+          rel='noreferrer'
+        >
           <p className='card__text'>{card.description}</p>
         </a>
         <p className='card__source-name'>{card.source.name}</p>
