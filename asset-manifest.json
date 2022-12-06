@@ -1,8 +1,9 @@
 {
   "files": {
-    "main.css": "/news-explorer-frontend/static/css/main.3363c7eb.css",
-    "main.js": "/news-explorer-frontend/static/js/main.e6e7b1ed.js",
+    "main.css": "/news-explorer-frontend/static/css/main.51dd04ba.css",
+    "main.js": "/news-explorer-frontend/static/js/main.d30b0922.js",
     "static/js/787.ed0d862c.chunk.js": "/news-explorer-frontend/static/js/787.ed0d862c.chunk.js",
+    "static/media/georgia-de-lotz--UsJoNxLaNo-unsplash.svg": "/news-explorer-frontend/static/media/georgia-de-lotz--UsJoNxLaNo-unsplash.bdb9d7bdd6ea3b05b2dc.svg",
     "static/media/author.jpg": "/news-explorer-frontend/static/media/author.77888b201d9753e23370.jpg",
     "static/media/georgia-de-lotz--UsJoNxLaNo-unsplash.png": "/news-explorer-frontend/static/media/georgia-de-lotz--UsJoNxLaNo-unsplash.66c3bc775a0a11237882.png",
     "static/media/roboto-slab-700.woff": "/news-explorer-frontend/static/media/roboto-slab-700.7cb09bef6990e87c9e2b.woff",
@@ -29,12 +30,12 @@
     "static/media/save-button-savemark.svg": "/news-explorer-frontend/static/media/save-button-savemark.a8b34fb45b19cb20990a.svg",
     "static/media/burger-black.svg": "/news-explorer-frontend/static/media/burger-black.f69aaff115ee8eb4b42a8c85bcc04819.svg",
     "static/media/burger-white.svg": "/news-explorer-frontend/static/media/burger-white.e36517e53a511b70bfb85c3d252945cc.svg",
-    "main.3363c7eb.css.map": "/news-explorer-frontend/static/css/main.3363c7eb.css.map",
-    "main.e6e7b1ed.js.map": "/news-explorer-frontend/static/js/main.e6e7b1ed.js.map",
+    "main.51dd04ba.css.map": "/news-explorer-frontend/static/css/main.51dd04ba.css.map",
+    "main.d30b0922.js.map": "/news-explorer-frontend/static/js/main.d30b0922.js.map",
     "787.ed0d862c.chunk.js.map": "/news-explorer-frontend/static/js/787.ed0d862c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3363c7eb.css",
-    "static/js/main.e6e7b1ed.js"
+    "static/css/main.51dd04ba.css",
+    "static/js/main.d30b0922.js"
   ]
 }
