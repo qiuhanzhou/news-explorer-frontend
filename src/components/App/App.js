@@ -15,10 +15,15 @@ import Footer from '../Footer/Footer'
 import api from '../../utils/newsApi'
 import { CurrentUserContext } from '../../context/CurrentUserContext'
 import { SavedCardsContext } from '../../context/SavedCardsContext'
+import {
+  getProfileInfo,
+  register,
+  authorize,
+  checkToken,
+} from '../../utils/MainApi'
 
 export default function App() {
   const location = useLocation()
-
   const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [brightTheme, setBrightTheme] = useState(null)
   const [isAuthFormOpen, setIsAuthFormOpen] = useState(false)
@@ -29,6 +34,7 @@ export default function App() {
   const [isSearchSuccessful, setIsSearchSuccessful] = useState(false)
   const [isSignUpSuccess, setIsSignUpSuccess] = useState(false)
   const [isSignin, setIsSignin] = useState(true)
+  const [showServerMessage, setShowServerMessage] = useState(false)
 
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext)
   const { savedCards, setSavedCards } = useContext(SavedCardsContext)
@@ -58,20 +64,17 @@ export default function App() {
     }
   }, [location.pathname])
 
-  // mimic calling api to get current user info upon App mounting
+  //  calling api to get current user info upon App mounting
   useEffect(() => {
-    // api
-    //   .getUserInfo()
-    //   .then((currentUser) => {
-    //     console.log(currentUser)
-    //     setCurrentUser(currentUser)
-    //   })
-    //   .catch((err) => {
-    //     console.log(`can't get inital user info: ${err}`)
-    //   })
-
-    setCurrentUser({ name: 'example' })
-  }, [setCurrentUser])
+    getProfileInfo()
+      .then((currentUser) => {
+        console.log(currentUser)
+        setCurrentUser(currentUser)
+      })
+      .catch((err) => {
+        console.log(`can't get inital user info: ${err}`)
+      })
+  }, [])
 
   function handleSearchNews(searchTerm) {
     setIsLoading(true)
@@ -117,55 +120,63 @@ export default function App() {
   }
 
   function handleRegisterSubmit(password, email) {
-    // auth
-    //   .register(password, email)
-    //   .then((res) => {
-    //     console.log(res)
-    //     if (res.data) {
-    //       //show modal with success message
-    //       setIsInfoTooltipOpen(true)
-    //       setMessage('Registration successfully completed!')
-    //       // history.push('/login')
-    //     } else {
-    //       setMessage('This email is not available')
-    //setHasServerError(true)
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     setMessage('This email is not available')
-    //     if (err.statusCode === 400) {
-    //       console.log('one of the fields was filled in incorrectly')
-    //     } else {
-    //       console.log(err)
-    //     }
-    //   })
+    register(password, email)
+      .then((res) => {
+        console.log(res)
+        if (res.data) {
+          //show modal with success message
+          setIsInfoTooltipOpen(true)
+          // history.push('/login')
+        } else {
+          //show register error
+          setShowServerMessage(true)
+        }
+      })
+      .catch((err) => {
+        if (err.statusCode === 400) {
+          console.log('one of the fields was filled in incorrectly')
+        } else {
+          console.log(err)
+        }
+      })
   }
+
   function handleSigninSubmit(email, password) {
-    // auth
-    //   .authorize(email, password)
-    //   .then((data) => {
-    //     console.log(data)
-    //     if (data.token) {
-    //       setValues({ email: '', password: '' })
-    //       handleLogin(email)
-    //       //wait 3s and then redirect
-    //       setTimeout(() => {
-    //         history.push('/')
-    //       }, 3000)
-    //     } else {
-    //       setError(true)
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     if (err.statusCode === 400) {
-    //       console.log('one or more of the fields were not provided')
-    //     }
-    //     if (err.statusCode === 401) {
-    //       console.log('401 - the user with the specified email not found')
-    //     }
-    //     console.log('cannot log in')
-    //     setError(true)
-    //   })
+    authorize(email, password)
+      .then((data) => {
+        console.log(data)
+        if (data.token) {
+          // setValues({ email: '', password: '' })
+          setIsLoggedIn(true)
+          const token = localStorage.getItem('jwt')
+
+          getProfileInfo(token)
+            .then((currentUserObj) => {
+              setCurrentUser(currentUserObj.data)
+            })
+            .catch((err) => {
+              console.log(`can't get inital user info: ${err}`)
+            })
+
+          //wait 3s and then redirect
+          //     setTimeout(() => {
+          //       history.push('/')
+          //     }, 3000)
+          //   } else {
+          //     setError(true)
+          //   }
+        }
+      })
+      .catch((err) => {
+        if (err.statusCode === 400) {
+          console.log('one or more of the fields were not provided')
+        }
+        if (err.statusCode === 401) {
+          console.log('401 - the user with the specified email not found')
+        }
+        console.log('cannot log in')
+        // setError(true)
+      })
   }
 
   return (
@@ -209,6 +220,8 @@ export default function App() {
                 setIsSignUpSuccess={setIsSignUpSuccess}
                 setIsSignin={setIsSignin}
                 isSignin={isSignin}
+                setShowServerMessage={setShowServerMessage}
+                showServerMessage={showServerMessage}
               />
               <InfoTooltip
                 isOpen={isInfoTooltipOpen}

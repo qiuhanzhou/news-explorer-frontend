@@ -1,5 +1,5 @@
 import './constants'
-import { apiKey, BASE_URL } from './constants'
+import { apiKey, NEWS_BASE_URL } from './constants'
 
 const currentDate = new Date()
   .toLocaleString()
@@ -30,12 +30,12 @@ class Api {
 
   getNews(searchTerm) {
     return this._request(
-      `${BASE_URL}?q=${searchTerm}&from=${fromDate}&to=${currentDate}&apiKey=${apiKey}`,
+      `${this._baseUrl}?q=${searchTerm}&from=${fromDate}&to=${currentDate}&apiKey=${apiKey}`,
     )
   }
 }
 const api = new Api({
-  baseUrl: BASE_URL,
+  baseUrl: NEWS_BASE_URL,
 })
 
 export default api

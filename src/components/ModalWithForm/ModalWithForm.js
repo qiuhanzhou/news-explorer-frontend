@@ -12,6 +12,10 @@ export default function ModalWithForm({
   setIsSignUpSuccess,
   setIsSignin,
   isSignin,
+  setShowServerMessage,
+  showServerMessage,
+  handleOnRegisterSubmit,
+  handleOnSigninSubmit,
 }) {
   //set states with input values on input change
   const { values, handleChange } = useForm({
@@ -28,7 +32,6 @@ export default function ModalWithForm({
     password: '',
     username: '',
   })
-  const [showServerMessage, setShowServerMessage] = useState(false)
 
   //form validation
   const handleCheckInputValidity = (e) => {
@@ -49,19 +52,12 @@ export default function ModalWithForm({
   function onSubmit(e) {
     e.preventDefault()
 
-    // if (email && password) {
-    //   if (isSignin) {
-    //     handleOnRegisterSubmit(password, email, username)
-    //   } else {
-    //     handleOnSigninSubmit(email)
-    //   }
-    // }
-
     if (isSignin) {
-      //onLogin
+      handleOnRegisterSubmit(password, email, username)
       setIsLoggedIn(true)
     } else {
       //onSignup
+      handleOnSigninSubmit(email)
       setShowServerMessage(true)
       setIsSignUpSuccess(true)
     }
