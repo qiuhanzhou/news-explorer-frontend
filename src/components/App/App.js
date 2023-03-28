@@ -24,7 +24,7 @@ import {
 
 export default function App() {
   const location = useLocation()
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [brightTheme, setBrightTheme] = useState(null)
   const [isAuthFormOpen, setIsAuthFormOpen] = useState(false)
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false)
@@ -45,16 +45,16 @@ export default function App() {
     if (isSignUpSuccess) setIsInfoTooltipOpen(true)
   }, [isSignUpSuccess, setIsInfoTooltipOpen])
 
-  useEffect(() => {
-    const parsed = JSON.parse(localStorage.getItem('saved-cards'))
-    if (parsed !== null) {
-      setSavedCards(parsed)
-    }
-  }, [setSavedCards])
+  // useEffect(() => {
+  //   const parsed = JSON.parse(localStorage.getItem('saved-cards'))
+  //   if (parsed !== null) {
+  //     setSavedCards(parsed)
+  //   }
+  // }, [setSavedCards])
 
-  useEffect(() => {
-    localStorage.setItem('saved-cards', JSON.stringify(savedCards))
-  }, [savedCards])
+  // useEffect(() => {
+  //   localStorage.setItem('saved-cards', JSON.stringify(savedCards))
+  // }, [savedCards])
 
   useEffect(() => {
     if (location.pathname === '/saved-news') {
@@ -64,17 +64,44 @@ export default function App() {
     }
   }, [location.pathname])
 
-  //  calling api to get current user info upon App mounting
+  //check for token before requesting user info when mounting the app
   useEffect(() => {
-    getProfileInfo()
-      .then((currentUser) => {
-        console.log(currentUser)
-        setCurrentUser(currentUser)
-      })
-      .catch((err) => {
-        console.log(`can't get inital user info: ${err}`)
-      })
+    const token = localStorage.getItem('jwt')
+    if (token) {
+      getProfileInfo()
+        .then((currentUserObj) => {
+          setCurrentUser(currentUserObj.data)
+        })
+        .catch((err) => {
+          console.log(`can't get inital user info: ${err}`)
+        })
+    }
   }, [])
+
+  //check for token before verifying token when mounting the app
+  useEffect(handleTokenCheck, [])
+
+  function handleTokenCheck() {
+    const token = localStorage.getItem('jwt')
+    if (token) {
+      checkToken(token)
+        .then((res) => {
+          if (res) {
+            //meaning token is verified
+            console.log(res)
+            setCurrentUser(res.data)
+            setIsLoggedIn(true)
+            // history.push('/')
+          } else {
+            //meaning token is not verified
+            localStorage.removeItem('jwt')
+          }
+        })
+        .catch((err) => {
+          console.log('cannot check token', err)
+        })
+    }
+  }
 
   function handleSearchNews(searchTerm) {
     setIsLoading(true)
@@ -261,5 +288,6 @@ export default function App() {
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>
     </div>
+    //use Navigate to dynamically redirect the  routes  to '/'
   )
 }

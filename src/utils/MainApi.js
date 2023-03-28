@@ -8,17 +8,8 @@ import {
   UNAUTHORIZED,
 } from './constants'
 
-const checkResponse = (res) => {
-  if (res.ok) {
-    console.log(
-      `URL: ${res.url}
-Status: ${res.statusText}
-Status code: ${res.status}`,
-    )
-    return res.json()
-  } else {
-    return Promise.reject(`Error: ${res.status}`)
-  }
+function checkResponse(res) {
+  return res.ok ? res.json() : Promise.reject(`Error:${res.status}`)
 }
 
 export const getProfileInfo = () => {
@@ -27,7 +18,7 @@ export const getProfileInfo = () => {
       authorization: `Bearer ${localStorage.getItem('jwt')}`,
       'Content-Type': 'application/json',
     },
-  }).then(checkResponse)
+  }).then((res) => checkResponse(res))
 }
 
 export const register = (email, password, name) => {
@@ -88,19 +79,6 @@ export const authorize = (password, email) => {
     })
 }
 
-export const checkToken = (token) => {
-  return fetch(`${BASE_URL}/users/me`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then(checkResponse)
-    .then((data) => data)
-}
-
 export const getArticles = () => {
   return fetch(`${BASE_URL}/articles`, {
     method: 'GET',
@@ -109,7 +87,7 @@ export const getArticles = () => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('jwt')}`,
     },
-  }).then(checkResponse)
+  }).then((res) => checkResponse(res))
 }
 
 export const saveArticles = ({
@@ -149,4 +127,19 @@ export const deleteArticles = ({ articleId }) => {
       Authorization: `Bearer ${localStorage.getItem('jwt')}`,
     },
   }).then(checkResponse)
+}
+
+export const checkToken = (token) => {
+  return fetch(`${BASE_URL}/users/me`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then(checkResponse)
+    .then((data) => {
+      return data
+    })
 }
