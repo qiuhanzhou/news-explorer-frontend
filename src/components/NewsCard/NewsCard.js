@@ -1,9 +1,9 @@
 import { useEffect, useState, useContext } from 'react'
 import { SavedCardsContext } from '../../context/SavedCardsContext'
-import './NewsCard.css'
 
 import { SearchTermContext } from '../../context/SearchTermContext'
-
+import { saveArticles, deleteArticles, getArticles } from '../../utils/MainApi'
+import './NewsCard.css'
 const months = [
   'January',
   'February',
@@ -31,38 +31,84 @@ export default function NewsCard({
   const [isTooptipShown, setIsTooptipShown] = useState(false)
   const [isCardSaved, setIsCardSaved] = useState(false)
 
-  //update isCardSaved status upon rerendering
+  //update isCardSaved status upon rerendering for UI
   useEffect(() => {
-    if (savedCards && savedCards.some((item) => item.url === card.url)) {
+    if (savedCards && savedCards.some((item) => item.link === card.url)) {
       setIsCardSaved(true)
     } else {
       setIsCardSaved(false)
     }
   }, [savedCards, card])
 
-  function handleSaveClick(e) {
+  function handleSaveClick() {
+    console.log(card)
     if (!isSignedIn) {
       setIsAuthModalOpen(true)
     } else {
       if (!isCardSaved) {
-        setIsCardSaved(true)
-        setSavedCards([...savedCards, { ...card, keyword: searchTerm }])
-      } else {
-        setIsCardSaved(false)
-        const newSavedCards = savedCards.filter((item) => {
-          console.log(item.url)
-          return item.url !== card.url
+        const {
+          title,
+          content: text,
+          publishedAt: date,
+          url: link,
+          urlToImage: image,
+          source,
+        } = card
+
+        saveArticles({
+          keyword: searchTerm,
+          title,
+          text,
+          date,
+          source: source.name,
+          link,
+          image,
         })
-        setSavedCards([...newSavedCards])
+          .then((newArticle) => {
+            console.log(newArticle)
+            setIsCardSaved(true)
+            // setSavedCards([...savedCards, newArticle])
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+
+        // getArticles()
+        //   .then((data) => {
+        //     console.log(data)
+        //     setSavedCards(data)
+        //   })
+        //   .catch((err) => {
+        //     console.log(err)
+        //   })
+      } else {
+        const currentSavedCard = savedCards.find(
+          (item) => item.link === card.url,
+        )
+
+        deleteArticles({ articleId: currentSavedCard._id }) //should pass in saved card obj with article ID info
+          .then((res) => {
+            console.log(res.data)
+            setIsCardSaved(false)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
       }
     }
   }
+
   function handleDeleteClick() {
-    const newSavedCards = savedCards.filter((item) => {
-      console.log(item.url)
-      return item.url !== card.url
-    })
-    setSavedCards([...newSavedCards])
+    deleteArticles({ articleId: card._id }) //should pass in saved card obj with article ID info
+      .then((res) => {
+        console.log(res.data)
+        //update savedCards state locally wihout having to call API agian
+
+        setSavedCards(savedCards.filter((item) => item.link !== card.link))
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   function convertDate(timestr) {
@@ -119,18 +165,22 @@ export default function NewsCard({
 
       <a
         className='card__link'
-        href={card.url}
+        href={isCardTypeSavedNews ? card.link : card.url}
         target='_blank'
         rel='noreferrer'
       >
         <img
           className='card__img'
-          src={card.urlToImage}
+          src={isCardTypeSavedNews ? card.image : card.urlToImage}
           alt='card news headline'
         />
       </a>
       <div className='card__content'>
-        <p className='card__date'>{convertDate(card.publishedAt)}</p>
+        <p className='card__date'>
+          {isCardTypeSavedNews
+            ? convertDate(card.date)
+            : convertDate(card.publishedAt)}
+        </p>
         <a
           className='card__link'
           href={card.url}
@@ -145,9 +195,13 @@ export default function NewsCard({
           target='_blank'
           rel='noreferrer'
         >
-          <p className='card__text'>{card.description}</p>
+          <p className='card__text'>
+            {isCardTypeSavedNews ? card.text : card.description}
+          </p>
         </a>
-        <p className='card__source-name'>{card.source.name}</p>
+        <p className='card__source-name'>
+          {isCardTypeSavedNews ? card.source : card.source.name}
+        </p>
       </div>
     </li>
   )

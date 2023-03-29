@@ -15,7 +15,7 @@ export default function Navigation({
   loggedIn,
   brightTheme,
   currentPath,
-  onSignIn,
+  onClickSignIn,
   setIsLoggedIn,
 }) {
   const { currentUser } = useContext(CurrentUserContext)
@@ -125,7 +125,7 @@ export default function Navigation({
                 aria-label='signin'
                 type='button'
                 className='navigation__button navigation__button_type_signin'
-                onClick={onSignIn}
+                onClick={onClickSignIn}
               >
                 Sign in{' '}
               </button>
@@ -168,7 +168,7 @@ export default function Navigation({
               aria-label='signin'
               type='button'
               className='navigation_burger-nav_button'
-              onClick={onSignIn}
+              onClick={onClickSignIn}
             >
               Sign in{' '}
             </button>

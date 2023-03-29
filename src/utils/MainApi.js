@@ -45,14 +45,14 @@ export const register = (email, password, name) => {
   })
 }
 
-export const authorize = (password, email) => {
+export const authorize = (email, password) => {
   return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ password, email }),
+    body: JSON.stringify({ email, password }),
   })
     .then((res) => {
       if (res.status === REQUEST_SUCCEDED) {
@@ -69,6 +69,7 @@ export const authorize = (password, email) => {
       }
     })
     .then((data) => {
+      console.log(data)
       if (data.token) {
         localStorage.setItem('jwt', data.token)
         localStorage.setItem('email', email)

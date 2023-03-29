@@ -10,6 +10,8 @@ export default function ModalWithForm({
   setIsAuthFormOpen,
   isSignUpSuccess,
   setIsSignUpSuccess,
+  isSignInSuccess,
+  signInErrorMessage,
   setIsSignin,
   isSignin,
   setShowServerMessage,
@@ -48,21 +50,16 @@ export default function ModalWithForm({
     }
   }
 
-  //mimic  successful api call to sign in / sign up
   function onSubmit(e) {
     e.preventDefault()
 
-    if (isSignin) {
-      handleOnRegisterSubmit(password, email, username)
-      setIsLoggedIn(true)
+    if (!isSignin) {
+      // setShowServerMessage(true)
+      // setIsSignUpSuccess(true)
+      handleOnRegisterSubmit(email, password, username)
     } else {
-      //onSignup
-      handleOnSigninSubmit(email)
-      setShowServerMessage(true)
-      setIsSignUpSuccess(true)
+      handleOnSigninSubmit(email, password)
     }
-
-    setIsAuthFormOpen(false)
   }
 
   return (
@@ -131,8 +128,12 @@ export default function ModalWithForm({
           </label>
         )}
 
-        {!isSignUpSuccess && showServerMessage && (
+        {!isSignin && !isSignUpSuccess && showServerMessage && (
           <p className='modal-form__server-error'>Email is not valid</p>
+        )}
+
+        {!isSignInSuccess && isSignin && (
+          <p className='modal-form__server-error'>{signInErrorMessage}</p>
         )}
 
         <button

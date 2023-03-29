@@ -2,6 +2,7 @@ import './SavedNews.css'
 import NewsCard from '../NewsCard/NewsCard'
 import { useContext } from 'react'
 import { SavedCardsContext } from '../../context/SavedCardsContext'
+import { useEffect } from 'react'
 
 export default function SavedNews({ isSignedIn, setIsAuthModalOpen }) {
   const { savedCards } = useContext(SavedCardsContext)

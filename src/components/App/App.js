@@ -2,21 +2,22 @@ import './App.css'
 
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom'
 import { useState, useEffect, useContext } from 'react'
-import SavedNews from '../SavedNews/SavedNews'
 import Header from '../Header/Header'
 import Main from '../Main/Main'
 import Navigation from '../Navigation/Navigation'
 import ProtectedRoute from '../ProtectedRoute'
 import ModalWithForm from '../ModalWithForm/ModalWithForm'
 import InfoTooltip from '../InfoToolTip/InfoToolTip'
-import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader'
 import About from '../About/About'
 import Footer from '../Footer/Footer'
-import api from '../../utils/newsApi'
+import SavedNewsPage from '../SavedNewsPage/SavedNewsPage'
+
 import { CurrentUserContext } from '../../context/CurrentUserContext'
 import { SavedCardsContext } from '../../context/SavedCardsContext'
+import api from '../../utils/newsApi'
 import {
   getProfileInfo,
+  getArticles,
   register,
   authorize,
   checkToken,
@@ -25,7 +26,7 @@ import {
 export default function App() {
   const location = useLocation()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [brightTheme, setBrightTheme] = useState(null)
+  const [brightTheme, setBrightTheme] = useState(false)
   const [isAuthFormOpen, setIsAuthFormOpen] = useState(false)
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false)
   const [cards, setCards] = useState([])
@@ -35,11 +36,11 @@ export default function App() {
   const [isSignUpSuccess, setIsSignUpSuccess] = useState(false)
   const [isSignin, setIsSignin] = useState(true)
   const [showServerMessage, setShowServerMessage] = useState(false)
+  const [isSignInSuccess, setIsSignInSuccess] = useState(null)
+  const [signInErrorMessage, setSignInErrorMessage] = useState('')
 
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext)
   const { savedCards, setSavedCards } = useContext(SavedCardsContext)
-
-  console.log(currentUser, savedCards)
 
   useEffect(() => {
     if (isSignUpSuccess) setIsInfoTooltipOpen(true)
@@ -64,19 +65,25 @@ export default function App() {
     }
   }, [location.pathname])
 
-  //check for token before requesting user info when mounting the app
   useEffect(() => {
-    const token = localStorage.getItem('jwt')
-    if (token) {
+    const jwt = localStorage.getItem('jwt')
+    if (jwt && isLoggedIn) {
       getProfileInfo()
-        .then((currentUserObj) => {
-          setCurrentUser(currentUserObj.data)
+        .then((res) => {
+          setCurrentUser(res.data)
         })
         .catch((err) => {
-          console.log(`can't get inital user info: ${err}`)
+          console.log(err)
+        })
+      getArticles()
+        .then((data) => {
+          setSavedCards(data)
+        })
+        .catch((err) => {
+          console.log(err)
         })
     }
-  }, [])
+  }, [isLoggedIn])
 
   //check for token before verifying token when mounting the app
   useEffect(handleTokenCheck, [])
@@ -142,12 +149,12 @@ export default function App() {
     setIsInfoTooltipOpen(false)
   }
 
-  function onSignIn() {
+  function onClickSignIn() {
     setIsAuthFormOpen(true)
   }
 
-  function handleRegisterSubmit(password, email) {
-    register(password, email)
+  function handleRegisterSubmit(email, password, name) {
+    register(email, password, name)
       .then((res) => {
         console.log(res)
         if (res.data) {
@@ -169,45 +176,33 @@ export default function App() {
   }
 
   function handleSigninSubmit(email, password) {
+    if (!password || !email) {
+      console.log('Email or password are not correct')
+      return
+    }
     authorize(email, password)
-      .then((data) => {
-        console.log(data)
-        if (data.token) {
-          // setValues({ email: '', password: '' })
+      .then((res) => {
+        if (res.token) {
+          console.log(res)
+          setCurrentUser(res.data)
           setIsLoggedIn(true)
-          const token = localStorage.getItem('jwt')
-
-          getProfileInfo(token)
-            .then((currentUserObj) => {
-              setCurrentUser(currentUserObj.data)
-            })
-            .catch((err) => {
-              console.log(`can't get inital user info: ${err}`)
-            })
-
-          //wait 3s and then redirect
-          //     setTimeout(() => {
-          //       history.push('/')
-          //     }, 3000)
-          //   } else {
-          //     setError(true)
-          //   }
+          closeAllPopups(true)
+          setIsAuthFormOpen(false)
         }
       })
       .catch((err) => {
-        if (err.statusCode === 400) {
-          console.log('one or more of the fields were not provided')
-        }
-        if (err.statusCode === 401) {
-          console.log('401 - the user with the specified email not found')
-        }
-        console.log('cannot log in')
-        // setError(true)
+        setIsSignUpSuccess(false)
+        setIsSignInSuccess(false)
+        setSignInErrorMessage(err.message)
+      })
+      .finally(() => {
+        setSavedCards([])
+        setIsLoading(false)
       })
   }
 
   return (
-    <div className={`App `}>
+    <div className={`App`}>
       <Routes>
         <Route
           exact
@@ -218,7 +213,7 @@ export default function App() {
                 currentPath={location.pathname}
                 brightTheme={brightTheme}
                 loggedIn={isLoggedIn}
-                onSignIn={onSignIn}
+                onClickSignIn={onClickSignIn}
                 setIsLoggedIn={setIsLoggedIn}
               />
               <Header
@@ -245,17 +240,18 @@ export default function App() {
                 setIsAuthFormOpen={setIsAuthFormOpen}
                 isSignUpSuccess={isSignUpSuccess}
                 setIsSignUpSuccess={setIsSignUpSuccess}
+                isSignInSuccess={isSignInSuccess}
                 setIsSignin={setIsSignin}
                 isSignin={isSignin}
                 setShowServerMessage={setShowServerMessage}
                 showServerMessage={showServerMessage}
+                signInErrorMessage={signInErrorMessage}
               />
               <InfoTooltip
                 isOpen={isInfoTooltipOpen}
                 setIsOpen={setIsInfoTooltipOpen}
                 onClose={handleCloseAllPopups}
                 setIsAuthFormOpen={setIsAuthFormOpen}
-                setIsSignin={setIsSignin}
               />
               <Footer />
             </>
@@ -266,21 +262,12 @@ export default function App() {
           <Route
             path='/saved-news'
             element={
-              <>
-                <Navigation
-                  currentPath={location.pathname}
-                  brightTheme={brightTheme}
-                  loggedIn={isLoggedIn}
-                  onSignIn={onSignIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                />
-                <SavedNewsHeader />
-                <SavedNews
-                  isSignedIn={isLoggedIn}
-                  setIsAuthModalOpen={setIsAuthFormOpen}
-                />
-                <Footer />
-              </>
+              <SavedNewsPage
+                isLoggedIn={isLoggedIn}
+                onClickSignIn={onClickSignIn}
+                setIsLoggedIn={setIsLoggedIn}
+                setIsAuthFormOpen={setCurrentUser}
+              />
             }
           />
         </Route>
