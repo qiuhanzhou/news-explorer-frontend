@@ -6,10 +6,7 @@ import Modal from '../Modal/Modal'
 export default function ModalWithForm({
   isOpen,
   onClose,
-  setIsLoggedIn,
-  setIsAuthFormOpen,
   isSignUpSuccess,
-  setIsSignUpSuccess,
   isSignInSuccess,
   signInErrorMessage,
   setIsSignin,
@@ -18,6 +15,8 @@ export default function ModalWithForm({
   showServerMessage,
   handleOnRegisterSubmit,
   handleOnSigninSubmit,
+  setShowSignInErrorMessage,
+  showSignInErrorMessage,
 }) {
   //set states with input values on input change
   const { values, handleChange } = useForm({
@@ -37,6 +36,7 @@ export default function ModalWithForm({
 
   //form validation
   const handleCheckInputValidity = (e) => {
+    setShowSignInErrorMessage(false)
     const currentInput = e.target
     if (!currentInput.validity.valid) {
       setHasError(true)
@@ -52,7 +52,8 @@ export default function ModalWithForm({
 
   function onSubmit(e) {
     e.preventDefault()
-
+    setShowServerMessage(false)
+    setShowSignInErrorMessage(false)
     if (!isSignin) {
       // setShowServerMessage(true)
       // setIsSignUpSuccess(true)
@@ -132,7 +133,7 @@ export default function ModalWithForm({
           <p className='modal-form__server-error'>Email is not valid</p>
         )}
 
-        {!isSignInSuccess && isSignin && (
+        {!isSignInSuccess && isSignin && showSignInErrorMessage && (
           <p className='modal-form__server-error'>{signInErrorMessage}</p>
         )}
 

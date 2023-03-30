@@ -8,7 +8,6 @@ export default function InfoToolTip({
   setIsAuthFormOpen,
 }) {
   function onCloseInfoTooltip() {
-    console.log('on close info')
     setIsOpen(false)
     setIsAuthFormOpen(true)
   }

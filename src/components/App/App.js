@@ -38,6 +38,7 @@ export default function App() {
   const [showServerMessage, setShowServerMessage] = useState(false)
   const [isSignInSuccess, setIsSignInSuccess] = useState(null)
   const [signInErrorMessage, setSignInErrorMessage] = useState('')
+  const [showSignInErrorMessage, setShowSignInErrorMessage] = useState(false)
 
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext)
   const { savedCards, setSavedCards } = useContext(SavedCardsContext)
@@ -95,7 +96,6 @@ export default function App() {
         .then((res) => {
           if (res) {
             //meaning token is verified
-            console.log(res)
             setCurrentUser(res.data)
             setIsLoggedIn(true)
             // history.push('/')
@@ -156,7 +156,6 @@ export default function App() {
   function handleRegisterSubmit(email, password, name) {
     register(email, password, name)
       .then((res) => {
-        console.log(res)
         if (res.data) {
           //show modal with success message
           setIsInfoTooltipOpen(true)
@@ -171,6 +170,7 @@ export default function App() {
           console.log('one of the fields was filled in incorrectly')
         } else {
           console.log(err)
+          setShowServerMessage(true)
         }
       })
   }
@@ -183,7 +183,6 @@ export default function App() {
     authorize(email, password)
       .then((res) => {
         if (res.token) {
-          console.log(res)
           setCurrentUser(res.data)
           setIsLoggedIn(true)
           closeAllPopups(true)
@@ -193,6 +192,7 @@ export default function App() {
       .catch((err) => {
         setIsSignUpSuccess(false)
         setIsSignInSuccess(false)
+        setShowSignInErrorMessage(true)
         setSignInErrorMessage(err.message)
       })
       .finally(() => {
@@ -246,6 +246,8 @@ export default function App() {
                 setShowServerMessage={setShowServerMessage}
                 showServerMessage={showServerMessage}
                 signInErrorMessage={signInErrorMessage}
+                setShowSignInErrorMessage={setShowSignInErrorMessage}
+                showSignInErrorMessage={showSignInErrorMessage}
               />
               <InfoTooltip
                 isOpen={isInfoTooltipOpen}

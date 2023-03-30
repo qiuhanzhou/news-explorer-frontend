@@ -14,7 +14,6 @@ export default function SavedNewsHeader({ keyword }) {
 
   const keywords = savedCards.map((card) => card.keyword)
   const uniqueKeywords = [...new Set(keywords)]
-  console.log(uniqueKeywords)
 
   return (
     <div className='saved-news-header'>

@@ -108,11 +108,7 @@ export default function Navigation({
                 >
                   {currentUser.name}
                   <img
-                    src={
-                      currentPath === '/saved-news'
-                        ? logOutIconBlack
-                        : logOutIconWhite
-                    }
+                    src={brightTheme ? logOutIconBlack : logOutIconWhite}
                     alt='signout icon'
                     className='navigation__signout-icon'
                   />

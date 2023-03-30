@@ -88,7 +88,6 @@ export default function NewsCard({
 
         deleteArticles({ articleId: currentSavedCard._id }) //should pass in saved card obj with article ID info
           .then((res) => {
-            console.log(res.data)
             setIsCardSaved(false)
           })
           .catch((err) => {
@@ -101,7 +100,6 @@ export default function NewsCard({
   function handleDeleteClick() {
     deleteArticles({ articleId: card._id }) //should pass in saved card obj with article ID info
       .then((res) => {
-        console.log(res.data)
         //update savedCards state locally wihout having to call API agian
 
         setSavedCards(savedCards.filter((item) => item.link !== card.link))

@@ -5,7 +5,6 @@ import Navigation from '../Navigation/Navigation'
 import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader'
 import SavedNews from '../SavedNews/SavedNews'
 import Footer from '../Footer/Footer'
-import { useState } from 'react'
 
 export default function SavedNewsPage({
   isLoggedIn,
