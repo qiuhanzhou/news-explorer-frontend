@@ -37,6 +37,8 @@ export default function ModalWithForm({
   //form validation
   const handleCheckInputValidity = (e) => {
     setShowSignInErrorMessage(false)
+    setShowServerMessage(false)
+
     const currentInput = e.target
     if (!currentInput.validity.valid) {
       setHasError(true)
