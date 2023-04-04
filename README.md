@@ -1,7 +1,7 @@
 
 # NewsExplorer Project
 
-This repository contains the front end part of "NewsExplorer" project that features user authorization, user registration, JWT token check and handles articles and users.
+This repository contains the front end part of "NewsExplorer" app where users can search for news articles worldwide and save them to their own accounts. Frontend features user authorization, user registration, user auth with JSON web tokens, API requests, hooks, functional components, and conditional rendering.
 
 * Endpoint of the API: https://api.news.karenzhou.me/ <br/>
 * Deployed live project: https://news.karenzhou.me/
