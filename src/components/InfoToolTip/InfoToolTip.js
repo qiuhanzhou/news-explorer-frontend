@@ -6,10 +6,12 @@ export default function InfoToolTip({
   setIsOpen,
   onClose,
   setIsAuthFormOpen,
+  setIsSignin,
 }) {
   function onCloseInfoTooltip() {
     setIsOpen(false)
     setIsAuthFormOpen(true)
+    setIsSignin(true)
   }
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

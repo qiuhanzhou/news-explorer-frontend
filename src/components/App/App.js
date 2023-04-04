@@ -254,6 +254,7 @@ export default function App() {
                 setIsOpen={setIsInfoTooltipOpen}
                 onClose={handleCloseAllPopups}
                 setIsAuthFormOpen={setIsAuthFormOpen}
+                setIsSignin={setIsSignin}
               />
               <Footer />
             </>
