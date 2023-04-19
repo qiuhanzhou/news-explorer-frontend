@@ -28,6 +28,8 @@ This application contains hover effects, links and transitions effects. Main fun
 * REACT<br/>
 * Mongo DB<br/>
 * Express<br/>
+* Celebrate/Joi Validation<br/>
+
 
 
 ## Running the project
